@@ -18,8 +18,8 @@ class ProductVariationSeeder extends Seeder
                 'product_id' => 1,
                  'size' => 'M',
                 'color' => 'Merah', 
-                
                  'stock' => 20,
+                 'sku' => 'DRS-M-RED-001',
                  'created_at' => now(),
                  'updated_at' => now(),
             ],
@@ -27,8 +27,8 @@ class ProductVariationSeeder extends Seeder
                 'product_id' => 1, 
                 'size' => 'L',
                 'color' => 'Biru', 
-                'price' => 299000,
                 'stock' => 20,
+                'sku' => 'DRS-L-BLU-002',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -36,8 +36,8 @@ class ProductVariationSeeder extends Seeder
                 'product_id' => 2,
                  'size' => 'S',
                 'color' => 'Hijau', 
-                'price' => 299000,
                 'stock' => 20,
+                'sku' => 'CRD-S-GRN-003',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -45,8 +45,8 @@ class ProductVariationSeeder extends Seeder
                 'product_id' => 3, 
                 'size' => 'M',
                 'color' => 'Kuning', 
-                'price' => 299000,
                 'stock' => 20,
+                'sku' => 'BLS-M-YEL-004',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -54,12 +54,21 @@ class ProductVariationSeeder extends Seeder
                 'product_id' => 4, 
                 'size' => 'L',
                 'color' => 'Putih', 
-                'price' => 299000,
                 'stock' => 20,
+                'sku' => 'SKRT-L-WHT-005',
                 'created_at' => now(),
                 'updated_at' => now(), 
                 
             ],
+            [
+                'product_id' => 5,
+                'size' => 'All Size',
+                'color' => 'Coklat',
+                'stock' => 20,
+                'sku' => 'BLS-ALL-BROWN-006',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ];
         Product_variation::insert($data);
     }

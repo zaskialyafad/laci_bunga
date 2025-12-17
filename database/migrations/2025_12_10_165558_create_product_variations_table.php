@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('Product_variations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->string('size');  // Contoh: XL, L, 42, 43
+            $table->string('size')->nullable();  // Contoh: XL, L, 42, 43
             $table->string('color'); // Contoh: Merah, hijau
             $table->unsignedInteger('promo')->default(0); // Promo spesifik varian
             $table->unsignedInteger('stock')->default(0); // Stok spesifik varian

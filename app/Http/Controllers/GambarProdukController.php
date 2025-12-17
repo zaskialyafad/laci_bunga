@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\gambar_produk;
+use App\Models\Gambar_produk;
 use Illuminate\Http\Request;
 
 class GambarProdukController extends Controller
@@ -34,7 +34,7 @@ class GambarProdukController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(gambar_produk $gambar_produk)
+    public function show(Gambar_produk $gambar_produk)
     {
         //
     }
@@ -42,7 +42,7 @@ class GambarProdukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(gambar_produk $gambar_produk)
+    public function edit(Gambar_produk $gambar_produk)
     {
         //
     }
@@ -58,7 +58,7 @@ class GambarProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(gambar_produk $gambar_produk)
+    public function destroy(Gambar_produk $gambar_produk)
     {
         //
     }

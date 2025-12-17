@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Product; 
 use App\Models\Category;
 use App\Models\Product_variation;
-use App\Models\gambar_produk;
+use App\Models\Gambar_produk;
 
 //import return type View
 use Illuminate\View\View;
@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function index() : View
     {
         //ambil semua products
-        $products = Product::with(['category', 'product_variation', 'gambar_produk'])->get();
+        $products = Product::with(['category', 'product_variation', 'Gambar_produk'])->get();
         return view('project.view-data', compact('products'));
     }
 
@@ -38,6 +38,7 @@ class ProductController extends Controller
     public function simpanProjek(Request $request)
     {
         $request->validate([
+            'images' => 'required',
             'image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
@@ -60,10 +61,10 @@ class ProductController extends Controller
         //upload gambar & simpan gambar
         if ($request->hasFile('image')) {
         foreach ($request->file('image') as $index => $image) {
-            $filename = time() . '_' . $index . '_' . $image->getClientOriginalName();
+            $filename = time() . '_'  . $image->getClientOriginalName();
             $image->move(public_path('uploads/products'), $filename);
-            
-            gambar_produk::create([
+
+            $product->images()->create([
                 'product_id' => $product->id,
                 'image' => $filename,
                 'is_primary' => $index === 0 ? 1 : 0, // Set foto pertama jadi primary image
@@ -72,24 +73,13 @@ class ProductController extends Controller
     }
         
         // simpan variasi produk
-        $sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'All Size'];
-        $colors = $request->color;
-
-        foreach ($colors as $color) {
-            foreach ($sizes as $size) {
-                Product_variation::create([
-                    'product_id' => $product->id,
-                    'size' => $size,
-                    'color' => $color,
-                    'stock' => $request->stock,
-                    // sku(Stock Keeping Unit) dibuat dari inisial nama produk, size, color, dan angka random contoh: TSH-M-MER-1234
-                    'sku' => strtoupper(substr($product->name, 0, 3)) . '-' . strtoupper($size) . '-' . strtoupper($color) . '-' . rand(1000, 9999),
-                ]);
-            }
-        }
+        $product->variations()->create([
+        'color' => $request->color,
+        'size' => $request->size,
+        'stock' => $request->stock,
+         ]);
+        return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');    }
     
-    return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');    }
-
     public function edit(Product $product)
     {
         // menampilkan detail produk yang akan di edit

@@ -21,14 +21,13 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>ID Produk</th>
                                             <th>Gambar</th>
                                             <th>Nama Produk</th>
                                             <th>Kategori</th>
+                                            <th>Harga</th>
                                             <th>Warna</th>
                                             <th>Ukuran & Stok</th>
-                                            <th>Harga</th>
-                                            <th>Stok</th>
+                                            <th>SKU</th>
                                             <th>Deskripsi</th>
                                             <th style="width: 15%">Aksi</th>
                                         </tr>
@@ -36,9 +35,9 @@
                                     <tbody>
                                         @foreach($products as $p)
                                         <tr>
+                                            {{-- nomor --}}
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $p->id }}</td>
-                                            <td>{{ $p->category->name }}</td>
+                                            {{-- gambar --}}
                                             <td>
                                                 @if($p->gambar_produk->count() > 0)
                                                     <img src="{{ asset('uploads/project/'.$p->gambar_produk->first()->image) }}" width="80" class="rounded">
@@ -46,7 +45,11 @@
                                                     <span class="badge badge-secondary">Tidak ada gambar</span>
                                                 @endif
                                             </td>
+                                            {{-- nama produk --}}
                                             <td>{{ $p->name }}</td>
+                                            {{-- kategori --}}
+                                            <td>{{ $p->category->name }}</td>
+                                            {{-- ukuran & stok --}}
                                             <td>{{ $p->product_variation->first()->color ?? '-' }}</td>
                                             <td>
                                                 <ul class="list-unstyled mb-0">
@@ -57,8 +60,19 @@
                                                     @endforeach
                                                 </ul>
                                             </td>
+                                            {{-- harga --}}
                                             <td>{{ "Rp " . number_format($p->price ?? 0, 0, ',', '.') }}</td>
+                                            {{-- sku --}}
+                                            <td>
+                                                <ul class="list-unstyled mb-0">
+                                                    @foreach ($p->product_variation as $pv)
+                                                    <li>{{ $pv->sku }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                            {{-- deskripsi --}}
                                             <td>{{ $p->description }}</td>
+                                                {{-- aksi --}}
                                             <td style="width: 20%">
                                                 <a href="{{ route('project.edit', $p->id) }}" class="btn btn-warning mb-3">Edit</a>
                                                 <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>

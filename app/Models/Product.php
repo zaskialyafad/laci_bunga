@@ -34,12 +34,12 @@ class Product extends Model
     }
 
     // Relasi ke model gambar_produk one to many
-    public function product_images(){
-        return $this->hasMany(gambar_produk::class, 'product_id', 'id');
+    public function Gambar_produk(){
+        return $this->hasMany(Gambar_produk::class, 'product_id', 'id');
     }
     // Relasi ke model gambar_produk one to one. Gambar yang primary
     public function primaryImage(){
-        return $this->hasOne(gambar_produk::class,'product_id', 'id')->where('is_primary', 1);
+        return $this->hasOne(Gambar_produk::class,'product_id', 'id')->where('is_primary', 1);
     }
 
 
