@@ -19,6 +19,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Blouse'],
             ['name' => 'Skirt'],
             ['name' => 'Accessories'],
+            ['name' => 'Others'],
         ];
         Category::insert($data);
     }

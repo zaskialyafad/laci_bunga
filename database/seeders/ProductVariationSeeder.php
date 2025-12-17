@@ -18,7 +18,7 @@ class ProductVariationSeeder extends Seeder
                 'product_id' => 1,
                  'size' => 'M',
                 'color' => 'Merah', 
-                 'price' => 299000,
+                
                  'stock' => 20,
                  'created_at' => now(),
                  'updated_at' => now(),

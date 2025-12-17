@@ -20,16 +20,33 @@ class Product extends Model
     'name',
     'category_id',       
     'description',
-    'image',
+    'price',
     ];
+
+    // Relasi ke model Category many to one
+    public function category_id(){
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    // Relasi ke model Product_variation one to many
+    public function product_variation(){
+        return $this->hasMany(Product_variation::class, 'product_id', 'id');
+    }
+
+    // Relasi ke model gambar_produk one to many
+    public function product_images(){
+        return $this->hasMany(gambar_produk::class, 'product_id', 'id');
+    }
+    // Relasi ke model gambar_produk one to one. Gambar yang primary
+    public function primaryImage(){
+        return $this->hasOne(gambar_produk::class,'product_id', 'id')->where('is_primary', 1);
+    }
+
 
     protected $guarded = ['id'];
     public function category(){
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-
-    public function product_variation(){
-        return $this->hasMany(Product_variation::class, 'product_id', 'id');
-    }
 }
+    
 

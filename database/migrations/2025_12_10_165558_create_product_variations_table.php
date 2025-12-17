@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ProductVariations', function (Blueprint $table) {
+        Schema::create('Product_variations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->string('size');  // Contoh: XL, L, 42, 43
             $table->string('color'); // Contoh: Merah, hijau
-            $table->unsignedInteger('price'); // Harga spesifik varian
-            $table->unsignedInteger('stock'); // Stok spesifik varian
+            $table->unsignedInteger('promo')->default(0); // Promo spesifik varian
+            $table->unsignedInteger('stock')->default(0); // Stok spesifik varian
+            $table->string('sku')->unique(); // Stock Keeping Unit, kode unik untuk tiap varian
             $table->timestamps();
         });
     }

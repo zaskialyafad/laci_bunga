@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Storage;
 //import model 
 use App\Models\Product; 
 use App\Models\Category;
-use App\Models\product_variation;
+use App\Models\Product_variation;
+use App\Models\gambar_produk;
 
 //import return type View
 use Illuminate\View\View;
@@ -23,7 +24,7 @@ class ProductController extends Controller
     public function index() : View
     {
         //ambil semua products
-        $products = Product::all();
+        $products = Product::with(['category', 'product_variation', 'gambar_produk'])->get();
         return view('project.view-data', compact('products'));
     }
 
@@ -37,37 +38,55 @@ class ProductController extends Controller
     public function simpanProjek(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'size' => 'required',
-            'color' => 'nullable',
+            'colors' => 'required|array',
+            'colors.*' => 'required|string',
         ]);
-       
-        //upload gambar
-        $file = $request->file('image');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/project'), $filename);
-        
-        // simpan produk
+
+         // simpan produk
         $product = Product::create([
             'category_id' => $request->category_id,
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $filename,
+            'price' => $request->price,
         ]);
+       
+        //upload gambar & simpan gambar
+        if ($request->hasFile('image')) {
+        foreach ($request->file('image') as $index => $image) {
+            $filename = time() . '_' . $index . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/products'), $filename);
+            
+            gambar_produk::create([
+                'product_id' => $product->id,
+                'image' => $filename,
+                'is_primary' => $index === 0 ? 1 : 0, // Set foto pertama jadi primary image
+            ]);
+        }
+    }
         
         // simpan variasi produk
-        $Product_variation = Product_variation::create([
-            'product_id' => $product->id,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'size' => $request->size,
-            'color' => $request->color,
-        ]);
+        $sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'All Size'];
+        $colors = $request->color;
+
+        foreach ($colors as $color) {
+            foreach ($sizes as $size) {
+                Product_variation::create([
+                    'product_id' => $product->id,
+                    'size' => $size,
+                    'color' => $color,
+                    'stock' => $request->stock,
+                    // sku(Stock Keeping Unit) dibuat dari inisial nama produk, size, color, dan angka random contoh: TSH-M-MER-1234
+                    'sku' => strtoupper(substr($product->name, 0, 3)) . '-' . strtoupper($size) . '-' . strtoupper($color) . '-' . rand(1000, 9999),
+                ]);
+            }
+        }
     
     return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');    }
 
@@ -81,16 +100,16 @@ class ProductController extends Controller
 
     Public function editProduct(Request $request, $id)
     {
-        // update produk
-       $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        $request->validate([
+            'image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'size' => 'required',
-            'color' => 'nullable',
+            'colors' => 'required|array',
+            'colors.*' => 'required|string',
         ]);
         
         
@@ -105,9 +124,13 @@ class ProductController extends Controller
             $file->move(public_path('uploads/project'), $filename);
             $product->image = $filename;  
         }
+
+        // Update data product
         $product->name = $request->name;
         $product->description = $request->description;
         $product->category_id = $request->category_id;
+        $product->save();
+        
         $product->product_variation->price = $request->price;
         $product->product_variation->stock = $request->stock;
         $product->product_variation->size = $request->size;
