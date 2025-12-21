@@ -17,10 +17,10 @@ class Product extends Model
 
     protected $table = 'products';
     protected $fillable = [ 
-    'name',
+    'product_name',
     'category_id',       
     'description',
-    'price',
+    'status',
     ];
 
     // Relasi ke model Category many to one

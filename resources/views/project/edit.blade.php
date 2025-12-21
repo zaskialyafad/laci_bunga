@@ -12,7 +12,7 @@
                 {{-- nama data --}}
                 <div class="mb-3">
                     <label for="name" class="form-label">Nama Produk<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{  }}" required>
+                    <input type="text" class="form-control" id="name" name="name" required>
                 </div>
                 {{-- kategori --}}
                 <div class="mb-3">

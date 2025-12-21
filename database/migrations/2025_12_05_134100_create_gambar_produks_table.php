@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Gambar_produks', function (Blueprint $table) {
+        Schema::create('gambar_produks', function (Blueprint $table) {
             $table->id();
         $table->foreignId('product_id')->constrained()->onDelete('cascade');
         $table->string('image'); // nama file gambar
-        $table->boolean('is_primary')->default(false); // Untuk foto utama yang ditampikan di web
+        $table->boolean('is_primary')->default(true); // Untuk foto utama yang ditampikan di web
         $table->timestamps();
         });
     }

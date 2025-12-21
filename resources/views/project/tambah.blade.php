@@ -62,9 +62,9 @@
                 </div>
                 <!-- Tombol Submit -->
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">
+                    <a href="{{ route('project.simpanProduk') }}" type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> Simpan Produk
-                    </button>
+                    </a>
                     <a href="{{ route('project.view-data') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>

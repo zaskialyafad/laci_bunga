@@ -7,12 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    
-    /**
-     * fillable
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', // Hanya nama yang boleh diisi melalui form
     ];

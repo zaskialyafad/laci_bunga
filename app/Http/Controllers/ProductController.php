@@ -35,50 +35,52 @@ class ProductController extends Controller
         return view('project.tambah', compact('category'));
     }
 
-    public function simpanProjek(Request $request)
+    public function simpanProduk(Request $request)
     {
         $request->validate([
-            'images' => 'required',
-            'image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',  // Field 'gambar' untuk single image
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|numeric',
             'size' => 'required',
-            'colors' => 'required|array',
-            'colors.*' => 'required|string',
+            'color' => 'required|string',
         ]);
 
-         // simpan produk
+         // buat produk
         $product = Product::create([
             'category_id' => $request->category_id,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
         ]);
+        //simpan variasi produk
+        Product_variation::create([
+            'product_id' => $product->id,
+            'stock' => $request->stock,
+            'size' => $request->size,
+            'color' => $request->color,
+        ]);
        
         //upload gambar & simpan gambar
-        if ($request->hasFile('image')) {
-        foreach ($request->file('image') as $index => $image) {
-            $filename = time() . '_'  . $image->getClientOriginalName();
-            $image->move(public_path('uploads/products'), $filename);
-
-            $product->images()->create([
-                'product_id' => $product->id,
+        $product = Product::findOrFail($product->id);
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/project'), $filename);
+            $product->Gambar_produk->image = $filename;
+            
+            $product->gambarProduk()->create([
                 'image' => $filename,
-                'is_primary' => $index === 0 ? 1 : 0, // Set foto pertama jadi primary image
-            ]);
+                'is_primary' => 1,  // Set sebagai primary jika single
+             ]);
         }
+
+        $product->save();
+        return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');    
     }
-        
-        // simpan variasi produk
-        $product->variations()->create([
-        'color' => $request->color,
-        'size' => $request->size,
-        'stock' => $request->stock,
-         ]);
-        return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');    }
+    
     
     public function edit(Product $product)
     {
@@ -91,50 +93,54 @@ class ProductController extends Controller
     Public function editProduct(Request $request, $id)
     {
         $request->validate([
-            'image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',  // Nullable untuk edit
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'size' => 'required',
-            'colors' => 'required|array',
-            'colors.*' => 'required|string',
         ]);
         
         
         $product= Product::findOrFail($id);
-        if ($request->hasFile('image')) {
-            //hapus gambar lama
-           if (file_exists(public_path('uploads/project/' . $product->image))) {
-                unlink(public_path('uploads/project/' . $product->image));
+        if ($request->hasFile('gambar')) {
+                // Hapus gambar lama
+                foreach ($product->gambarProduk as $oldImage) {
+                    Storage::disk('public')->delete('project/' . $oldImage->image);
+                    $oldImage->delete();
+                }
+                // Upload baru
+                $file = $request->file('gambar');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('project', $filename, 'public');
+                $product->gambarProduk()->create([
+                    'image' => $filename,
+                    'is_primary' => 1,
+                ]);
             }
-            $file = $request->file('image');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/project'), $filename);
-            $product->image = $filename;  
-        }
 
-        // Update data product
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->category_id = $request->category_id;
-        $product->save();
-        
-        $product->product_variation->price = $request->price;
-        $product->product_variation->stock = $request->stock;
-        $product->product_variation->size = $request->size;
-        $product->product_variation->color = $request->color;   
+        // Update data produk
+            $product->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+                'price' => $request->price,
+            ]);
         $product->save();
         return redirect()->route('project.view-data')->with('success','Product berhasil diupdate!');
     
     }
     public function delete($id)
     {
-        // menghapus produk
         $product = Product::findOrFail($id);
-        $product->delete();
-        
-        return redirect()->route('project.view-data')->with('success','Product berhasil dihapus!');  
+            // Hapus gambar dari storage
+            foreach ($product->gambarProduk as $image) {
+                Storage::disk('public')->delete('project/' . $image->image);
+            }
+            // Hapus record relasi
+            $product->gambarProduk()->delete();
+            $product->productVariations()->delete();  // Hapus variasi juga
+            // Hapus produk
+            $product->delete();
+            return redirect()->route('project.view-data')->with('success', 'Product berhasil dihapus!');
     }
 }

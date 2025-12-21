@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();  // primary key
             $table->foreignId('category_id')->constrained()->onDelete('cascade'); // foreign key ke tabel kategori, cascade agar saat kategori dihapus, produk terkait juga terhapus
-            $table->string('name'); // nama produk
+            $table->string('product_name'); // nama produk
             $table->text('description')->nullable(); //deskripsi produk tapi bisa null atau kosong (isinya detail bahan, ukuran, dll)
-            $table->string('price');
+            $table->enum('status', ['archive', 'show'])->default('show'); // status produk
             $table->timestamps(); // created_at dan updated_at
         });   
      }

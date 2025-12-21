@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->string('size')->nullable();  // Contoh: XL, L, 42, 43
-            $table->string('color'); // Contoh: Merah, hijau
-            $table->unsignedInteger('promo')->default(0); // Promo spesifik varian
+            $table->string('color')->nullable(); // Contoh: Merah, hijau
+            $table->unsignedInteger('price')->default(0); // Harga produk per varian tapi bisa juga perproduk
             $table->unsignedInteger('stock')->default(0); // Stok spesifik varian
             $table->string('sku')->unique(); // Stock Keeping Unit, kode unik untuk tiap varian
             $table->timestamps();
