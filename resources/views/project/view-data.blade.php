@@ -1,92 +1,103 @@
 @extends('layout.template-admin')
 @section('content')
     <!-- Begin Page Content -->
-                <div class="container-fluid">
+    <div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-2 text-gray-800">
+            Data Produk
+        </h1>
+        {{-- button tambah data --}}
+        <a href="{{ route('project.tambah') }}" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Tambah Data
+        </a>
+    </div>
+    <!-- Tabel Produk -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Produk</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-primary text-center">
+                        <tr>
+                            <th>No</th>
+                            <th>Gambar</th>
+                            <th>Kategori</th>
+                            <th>Nama Produk</th>
+                            <th>Warna</th>
+                            <th>Ukuran</th>
+                            <th>Stok</th>
+                            <th>SKU</th>
+                            <th>Deskripsi</th> {{-- Pindah ke belakang --}}
+                            <th style="width: 10%">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($products as $index => $product)
+                            @php 
+                                $variations = collect($product->product_variation ?? $product['product_variation'] ?? []);
+                                $rowCount = $variations->count() > 0 ? $variations->count() : 1;
+                            @endphp
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
-                    {{-- button tambah data --}}
-                    <a href="{{ route('project.tambah') }}" class="btn btn-primary mb-3">Tambah Data</a>
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Produk</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Gambar</th>
-                                            <th>Nama Produk</th>
-                                            <th>Kategori</th>
-                                            <th>Harga</th>
-                                            <th>Warna</th>
-                                            <th>Ukuran & Stok</th>
-                                            <th>SKU</th>
-                                            <th>Deskripsi</th>
-                                            <th style="width: 15%">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($products as $p)
-                                        <tr>
-                                            {{-- nomor --}}
-                                            <td>{{ $loop->iteration }}</td>
-                                            {{-- gambar --}}
-                                            <td>
-                                                @if($p->gambar_produk->count() > 0)
-                                                    <img src="{{ asset('uploads/project/'.$p->gambar_produk->first()->image) }}" width="80" class="rounded">
-                                                @else
-                                                    <span class="badge badge-secondary">Tidak ada gambar</span>
-                                                @endif
-                                            </td>
-                                            {{-- nama produk --}}
-                                            <td>{{ $p->name }}</td>
-                                            {{-- kategori --}}
-                                            <td>{{ $p->category->name }}</td>
-                                            {{-- ukuran & stok --}}
-                                            <td>{{ $p->product_variation->first()->color ?? '-' }}</td>
-                                            <td>
-                                                <ul class="list-unstyled mb-0">
-                                                    @foreach ($p->product_variation as $pv)
-                                                    <li>
-                                                        {{ $pv->size }}: {{ $pv->stock }} pcs
-                                                    </li> 
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                            {{-- harga --}}
-                                            <td>{{ "Rp " . number_format($p->price ?? 0, 0, ',', '.') }}</td>
-                                            {{-- sku --}}
-                                            <td>
-                                                <ul class="list-unstyled mb-0">
-                                                    @foreach ($p->product_variation as $pv)
-                                                    <li>{{ $pv->sku }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                            {{-- deskripsi --}}
-                                            <td>{{ $p->description }}</td>
-                                                {{-- aksi --}}
-                                            <td style="width: 20%">
-                                                <a href="{{ route('project.edit', $p->id) }}" class="btn btn-warning mb-3">Edit</a>
-                                                <button type="submit" class="btn btn-sm btn-danger">HAPUS</button>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                <!-- /.container-fluid -->
+                            @foreach($variations as $vIndex => $v)
+                                <tr>
+                                    {{-- Kolom Utama (Hanya muncul di baris pertama produk) --}}
+                                    @if($vIndex === 0)
+                                        <td rowspan="{{ $rowCount }}" class="text-center">{{ $index + 1 }}</td>
+                                        <td rowspan="{{ $rowCount }}" class="text-center">
+                                            @if($product->gambar_produk->count() > 0)
+                                            <img src="{{ asset('storage/productsImg/'.$product->gambar_produk->first()->image) }}" width="70" class="rounded border">
+                                            @else
+                                                <img src="{{ asset('assets/img/no-image.png') }}" width="70" class="rounded border">
+                                            @endif
+                                        </td>
+                                        <td rowspan="{{ $rowCount }}" class="text-center">
+                                            <span class="badge bg-info text-white">{{ $product->category->name }}</span>
+                                        </td>
+                                        <td rowspan="{{ $rowCount }}"><strong>{{ $product->product_name }}</strong></td>
+                                    @endif
 
-                </div>
-            <!-- End of Main Content -->
+                                    {{-- Kolom Variasi (Muncul di setiap baris) --}}
+                                    <td class="text-center">{{ $v->color ?? '-' }}</td>
+                                    <td class="text-center">{{ $v->size ?? '-' }}</td>
+                                    <td class="text-center font-weight-bold">{{ $v->stock }}</td>
+                                    <td><code>{{ $v->sku }}</code></td>
+
+                                    {{-- Kolom Deskripsi & Aksi (Pindah ke belakang & di-rowspan) --}}
+                                    @if($vIndex === 0)
+                                        <td rowspan="{{ $rowCount }}">
+                                            {{-- Dilimit menjadi 40 karakter agar tidak terlalu panjang --}}
+                                            <small class="text-muted">
+                                                {{ Str::limit($product->description, 40, '...') }}
+                                            </small>
+                                        </td>
+                                        <td rowspan="{{ $rowCount }}" class="text-center">
+                                            <div class="btn-group-vertical btn-group-sm">
+                                                <a href="{{ route('project.edit', $product->id) }}" class="btn btn-warning">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ $product->id }}', '{{ $product->product_name }}')">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="10" class="text-center py-5 text-muted">Data produk masih kosong.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
 
 @endsection

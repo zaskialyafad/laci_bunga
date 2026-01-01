@@ -1,169 +1,4 @@
-@extends('layout.template-admin')
-@section('content')
-<div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Tambah Data Produk</h6>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('project.tambah') }}" method="POST" enctype="multipart/form-data" id="formTambahProduk">
-                @csrf
-                <input type="hidden" id="productId" value="">
-                {{-- Informasi Produk --}}
-                <div class="mb-4 pb-4 border-bottom">
-                    <h5 class="mb-3"> Informasi Product</h5>
-                    {{-- nama produk --}}
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nama Produk<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="namaProduk" name="product_name" required>
-                         <div class="form-text text-end"><span id="sisaKarakterNama">0</span>/225</div>
-                    </div>
-                    {{-- Kategori --}}
-                    <div class="mb-3">
-                        <label for="category_id" class="form-label">Kategori<span class="text-danger">*</span></label>
-                        <select name="category_id" id="kategori" class="form-select" required>
-                            <option selected>--Pilih Kategori--</option>
-                            <option>
-                                @foreach ($category as $c)
-                                    <option value="{{ $c->id }}" {{ old('category_id') == $c->id ? 'selected' : '' }}>
-                                        {{ $c->name }}
-                                    </option>
-                                @endforeach
-                            </option>
-                        </select>
-                    </div>
-                    {{-- Deskripsi --}}
-                    <div class="mb-3">
-                        <label for="deskripsi" class="form-label">Deskripsi<span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="deskripsi" name="description"></textarea>
-                        <div class="form-text text-end"><span id="sisaKarakter">0</span>/3000</div>
-                    </div>
-                </div>
-                {{-- Gambar produk --}}
-                <div class="mb-4 pb-4 border-bottom">
-                    <h5 class="mb-3"> Gambar Produk</h5>
-
-                    <div class="mb-3">
-                        <label for="gambar_produk" class="form-label">Upload Gambar Produk<span class="text-danger">*</span></label>
-                        <input type="file" class="form-control" id="image" name="image[]" multiple required>
-                        <small class="text-muted">Ukuran maksimal 2MB. Format: JPG, JPEG, PNG. Maksimal 9 gambar.</small>
-                    </div>
-                </div>
-                {{-- Informasi Penjualan--}}
-                <div class="mb-4 pb-4 border-bottom">
-                    <h5 class="mb-3"> Informasi Penjualan</h5>
-                    <div class="row">
-                        {{-- harga --}}
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="price" class="form-label">Harga Produk<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="price" name="price" placeholder="0" value="{{ old('harga') }}" required>
-                            </div>
-                        </div>
-                        {{-- stok --}}
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="stock" class="form-label">Stok Produk<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="stock" name="stock" placeholder="0" value="{{ old('stock') }}" required>
-                            </div>
-                        </div>
-                        {{-- Storage Keeper Unit (SKU) --}}
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="sku" class="form-label">SKU<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU akan di-generate otomatis" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Button untuk tambah variasi produk --}}
-                <button type="button" class="btn btn-outline-primary" id="btnTambahVariasi">
-                    + Tambah Variasi Produk
-                </button>
-
-                {{-- Section Tambah Variasi (defaultnya hidden) --}}
-                <div id="variasiSection" style="display: none;">
-                    <div class="card bg-light">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6><i class="fas fa-cogs"></i> Pengaturan Variasi</h6>
-                            <button type="button" class="btn btn-outline-danger" onclick="hapusSemuaVariasi()">
-                                <i class="fas fa-trash"></i> Hapus Semua Variasi
-                            </button>
-                        </div>
-
-                        {{-- Container untuk variasi produk --}}
-                        <div id="variasiContainer">
-                            {{-- Variasi produk akan ditambahkan di sini --}}
-                        </div>
-
-                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="tambahVariasiLainnya()">
-                            + Tambah Variasi Lainnya
-                        </button>
-
-                        {{-- Tabel tambah variasi produk --}}
-                        <div id="tabelVariasi" style="display: none;" class="mt-4">
-                            {{-- Tombol aksi yang bisa dilakukan --}}
-                            <div class="alert alert-primary">
-                                <div class="row align-items-center">
-                                    <div class="col-md-5">
-                                        <label class="">Terapkan Harga ke Semua Variasi: </label>                    
-                                        <div class="input-group input-group-sm">
-                                            <input type="number" class="form-control" id="hargaSemuaVariasi" placeholder="0" min="0">
-                                            <button type="button" class="btn btn-primary" onclick="semuaHargaVariasiSama()">Terapkan</button>
-                                        </div> 
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="">Terapkan Stok ke Semua Variasi: </label>                    
-                                        <div class="input-group input-group-sm">
-                                            <input type="number" class="form-control" id="stokSemuaVariasi" placeholder="0" min="0">
-                                            <button type="button" class="btn btn-primary" onclick="semuaStokVariasiSama()">Terapkan</button>
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-sm" id="tabelVariasiProduk">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>SKU</th>
-                                            <th>Harga (Rp)</th>
-                                            <th>Stok</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tabelVariasiBody">
-                                        {{-- Rows akan di-generate otomatis melalui javaScript --}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="alert alert-info mt-3 mb-0">
-                            <i class="fas fa-lightbulb"></i> <strong>Cara menggunakan variasi:</strong><br>
-                                1. Klik "Tambah Variasi" untuk menambah variasi produk <br>
-                                2. Tambahkan opsi untuk setiap grup variasi<br>
-                                3. Tabel kombinasi akan muncul otomatis<br>
-                                4. Gunakan "Terapkan ke Semua" untuk set harga/stok yang sama
-                        </div>
-                    </div>
-                </div>
-                {{-- Submit Buttons --}}
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Simpan Produk
-                    </button>
-                    <a href="{{ route('project.view-data') }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Kembali
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>   
-</div>
-
-<script>
-    let jumlahVariasi = 0;
+let jumlahVariasi = 0;
 let variasi={};
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -506,19 +341,18 @@ function generateTabelVariasi() {
     });
     // mengisi body tabel dengan semua kombinasi variasi
     tbody.innerHTML = semuaKombinasi.map((kombinasi, index) => {
-        const productId = document.getElementById('productId').value || '';
-        const namaProduk = document.getElementById('namaProduk').value || 'PROD';
-        const kodeNama = namaProduk.substring(0, 3).toUpperCase().replace(/\s+/g, '-');
-        const skuCode = `${kodeNama}${productId}-${kombinasi.color}-${kombinasi.size}`.toUpperCase().replace(/\s+/g, '-');
+        const productId = document.getElementById('productId').value;
+        const kodeUnik = productId ? `LB${productId}` : `NEW`;
+        const skuCode = `${kodeUnik}-${kombinasi.color}-${kombinasi.size}`.toUpperCase().replace(/\s+/g, '-');
         return `
             <tr>
                 <td>${kombinasi.color}</td>
                 <td>${kombinasi.size}</td>
                 <td>
-                    <input type="number" name="variations[${index}][price]" class="form-control form-control-sm input-harga" min="0" required>
+                    <input type="number" name="variations[${index}][price]" class="form-control form-control-sm" min="0" required>
                 </td>
                 <td>
-                    <input type="number" name="variations[${index}][stock]" class="form-control form-control-sm input-stok" min="0" required>
+                    <input type="number" name="variations[${index}][stock]" class="form-control form-control-sm" min="0" required>
                 </td>
                 <td>
                     <input type="text" name="variations[${index}][sku]" class="form-control form-control-sm" value="${skuCode}" readonly>
@@ -549,25 +383,7 @@ function semuaHargaVariasiSama() {
 
     // format harga rupiah
     const formatHarga = parseInt(harga).toLocaleString('id-ID');
-    alert(`Harga Rp ${formatHarga} telah diterapkan ke semua variasi!`);
-}
-
-function semuaStokVariasiSama() {
-    const stokSemuaVariasi = document.getElementById('stokSemuaVariasi');
-    if (!stokSemuaVariasi) return;
-    const stok = stokSemuaVariasi.value;
-
-    if (!stok || stok < 0) {
-        alert('Masukkan stok yang valid!');
-        return;
-    }
-
-    const inputStok = document.querySelectorAll('.input-stok');
-    inputStok.forEach(input => {
-        input.value = stok;
-    });
-
-    alert('Stok ' + stok + ' telah diterapkan ke semua variasi!');
+    alert('Harga Rp ${formatHarga} telah diterapkan ke semua variasi!');
 }
 
 // validasi form sebelum submit
@@ -608,8 +424,3 @@ if (form) {
         }
     });
 }
-</script>
-
-
-
-@endsection

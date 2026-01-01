@@ -15,15 +15,27 @@ class product_variation extends Model
         'price',
         'stock',
         'sku',
-        'promo',
     ];
-    
+
+    protected $casts = [
+        'price' => 'integer',
+        'stock' => 'integer',
+    ];
+
+    protected $attributes = [
+        'price' => 0,
+        'stock' => 0,
+    ];
+
+    // satu variasi punya satu produk
     public function product(){
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
-    // penetua harga promo dengan input presentase diskon
-    public function hargaPromo(){
-        return $this->product->price - ($this->product->price * $this->promo / 100);
+    public function getVariationNameAttribute()
+    {
+        $parts = array_filter([$this->color, $this->size]);
+        return implode(' - ', $parts) ?: 'Default';
     }
+
 }

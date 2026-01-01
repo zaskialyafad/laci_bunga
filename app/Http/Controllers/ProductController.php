@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 
 //import model 
@@ -12,7 +14,7 @@ use App\Models\Product_variation;
 use App\Models\Gambar_produk;
 
 //import return type View
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 
 class ProductController extends Controller
 {
@@ -21,11 +23,11 @@ class ProductController extends Controller
      *
      * @return void
      */
-    public function index() : View
+    public function index() 
     {
         //ambil semua products
-        $products = Product::with(['category', 'product_variation', 'Gambar_produk'])->get();
-        return view('project.view-data', compact('products'));
+        $products = Product::with(['category', 'gambar_produk', 'product_variation'])->latest()->get();        
+        return view ( 'project.view-data', compact('products'));
     }
 
     public function tambah()
@@ -38,109 +40,187 @@ class ProductController extends Controller
     public function simpanProduk(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',  // Field 'gambar' untuk single image
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|numeric',
-            'size' => 'required',
-            'color' => 'required|string',
+            'product_name'=>'required|string',
+            'category_id'=>'required|exists:categories,id',
+            'description'=>'required|string',
+            'image.*'=>'image|mimes:jpg,jpeg,png|max:2048',
+            'price'=>'required_without:variations|numeric|min:0',
+            'stock'=>'required_without:variations|integer|min:0',
+
+            'variations.*.color'=> 'required_with:variations|string',
+            'variations.*.size'=> 'required_with:variations|string',
+            'variations.*.sku'=> 'required_with:variations|string',
+            'variations.*.price' => 'required_with:variations|numeric|min:0',
+            'variations.*.stock' => 'required_with:variations|integer|min:0',
+
         ]);
 
-         // buat produk
-        $product = Product::create([
+        DB::beginTransaction();
+
+        try {
+            $product = Product::create([
             'category_id' => $request->category_id,
-            'name' => $request->name,
+            'product_name' => $request->product_name,
             'description' => $request->description,
-            'price' => $request->price,
-        ]);
-        //simpan variasi produk
-        Product_variation::create([
-            'product_id' => $product->id,
-            'stock' => $request->stock,
-            'size' => $request->size,
-            'color' => $request->color,
-        ]);
-       
-        //upload gambar & simpan gambar
-        $product = Product::findOrFail($product->id);
-        if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/project'), $filename);
-            $product->Gambar_produk->image = $filename;
-            
-            $product->gambarProduk()->create([
-                'image' => $filename,
-                'is_primary' => 1,  // Set sebagai primary jika single
-             ]);
+            'status' => 'show'
+             ]);  
+             
+             if ($request -> hasFile('image')){
+                $images = $request->file('image');
+                foreach ($images as $index => $image){
+                    $filename = time() . '_' .$index . '-' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+                    $image->storeAs('productsImg', $filename, 'public');
+                    Gambar_produk::create([
+                        'product_id' => $product->id,
+                        'image' => $filename,
+                        'is_primary' => $index === 0 ? 1 : 0,
+                    ]);
+                }
+             } 
+
+             if ($request->has('variations')) {
+            foreach ($request->variations as $variation) {
+                Product_variation::create([
+                    'product_id' => $product->id,
+                    'color' => $variation['color'],
+                    'size'  => $variation['size'],
+                    'sku'   => $variation['sku'],
+                    'price' => $variation['price'],
+                    'stock' => $variation['stock'],
+                ]);
+            }
+        } else {
+            // Jika tidak ada variasi (Produk Tunggal)
+            $sku = 'SKU-'. strtoupper(Str::random(8));
+            Product_variation::create([
+                'product_id' => $product->id,
+                'color' => null,
+                'size' => null,
+                'sku' => $sku,
+                'price' => $request->price,
+                'stock' => $request->stock,
+            ]);
         }
 
-        $product->save();
-        return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');    
+
+            DB::commit();
+            return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');
+        } catch (\Exception $e) {
+
+         // rollback jika terjadi error
+        DB::rollBack();
+        return redirect()->back()->withInput()->with('error', 'Gagal simpan: ' . $e->getMessage());        }      
     }
     
     
     public function edit(Product $product)
     {
         // menampilkan detail produk yang akan di edit
-        $product = Product::findOrFail($product->id);
-        $category = Category::all();
-        return view('project.edit',compact('product', 'category'));
+        $product->load(['Category','Gambar_produk', 'Product_variation']);
+        $categories = Category::all();
+        return view ('project.edit', compact('product','categories'));
     }
 
-    Public function editProduct(Request $request, $id)
+    Public function editProduct(Request $request, Product $product)
     {
         $request->validate([
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',  // Nullable untuk edit
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required|numeric',
+            'product_name'=>'required|string',
+            'category_id'=>'required|exists:categories,id',
+            'description'=>'required|string',
+            'image.*'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'price'=>'required_without:variations|numeric|min:0',
+            'stock'=>'required_without:variations|integer|min:0',
+
+            'variations.*.color'=> 'required_with:variations|string',
+            'variations.*.size'=> 'required_with:variations|string',
+            'variations.*.price' => 'required_with:variations|numeric|min:0',
+            'variations.*.stock' => 'required_with:variations|integer|min:0',
+
         ]);
-        
-        
-        $product= Product::findOrFail($id);
-        if ($request->hasFile('gambar')) {
-                // Hapus gambar lama
-                foreach ($product->gambarProduk as $oldImage) {
-                    Storage::disk('public')->delete('project/' . $oldImage->image);
-                    $oldImage->delete();
+        DB::beginTransaction();
+
+        try{
+            // update produk
+            $product -> update ([
+                'category_id' => $request->category_id,
+                'product_name' => $request->product_name,
+                'description' => $request->description,
+            ]);
+            // update gambar produk
+            if ($request -> hasFile('image')){
+                foreach ($product->gambar_produk as $image) {
+                    Storage::disk('productsImg')->delete('storage/productsImg/' . $image->image);
                 }
-                // Upload baru
-                $file = $request->file('gambar');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('project', $filename, 'public');
-                $product->gambarProduk()->create([
-                    'image' => $filename,
-                    'is_primary' => 1,
-                ]);
+
+                $image = $request -> file('image');
+
+                foreach ($image as $index => $img){
+                    $filename = time() . '_' .$index . '-' . Str::random(10) . '.' . $img->getClientOriginalExtension();
+                    $img->storeAs('productsImg', $filename, 'public');
+                    Gambar_produk::create([
+                        'product_id' => $product->id,
+                        'image' => $filename,
+                        'is_primary' => $index === 0 ? 1 : 0,
+                    ]);
+                }
             }
 
-        // Update data produk
-            $product->update([
-                'name' => $request->name,
-                'description' => $request->description,
-                'category_id' => $request->category_id,
-                'price' => $request->price,
-            ]);
-        $product->save();
-        return redirect()->route('project.view-data')->with('success','Product berhasil diupdate!');
-    
+            // update variasi produk
+            if ($request->has('variations')&& is_array($request->variations)) {
+                // Hapus variasi lama
+                $product->productVariations()->delete();
+
+                // Tambah variasi baru
+                foreach ($request->variations as $variation) {
+                    Product_variation::create([
+                        'product_id' => $product->id,
+                        'color' => $variation['color'],
+                        'size'  => $variation['size'],
+                        'sku'   => $variation['sku'],
+                        'price' => $variation['price'],
+                        'stock' => $variation['stock'],
+                    ]);
+                }
+            } else {
+            //    update produk tunggal
+                $singleVariation = $product->productVariations()->first();
+                if ($singleVariation) {
+                    $singleVariation->update([
+                        'price' => $request->price,
+                        'stock' => $request->stock,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('project.view-data')->with('success','Product berhasil diupdate!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan saat mengupdate produk: ' . $e->getMessage());
+        }
     }
-    public function delete($id)
+    
+    public function delete(Product $product, $id)
     {
-        $product = Product::findOrFail($id);
+        DB::beginTransaction();
+        try{
             // Hapus gambar dari storage
-            foreach ($product->gambarProduk as $image) {
-                Storage::disk('public')->delete('project/' . $image->image);
+            foreach ($product->gambar_produk as $image) {
+                Storage::disk('public')->delete('productsImg/' . $image->image);
             }
             // Hapus record relasi
             $product->gambarProduk()->delete();
-            $product->productVariations()->delete();  // Hapus variasi juga
+            $product->productVariations()->delete();
             // Hapus produk
             $product->delete();
-            return redirect()->route('project.view-data')->with('success', 'Product berhasil dihapus!');
-    }
+
+            DB::commit();
+            
+            return redirect()->route('project.view-data')->with('success', 'Produk berhasil dihapus!');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }    }
 }
