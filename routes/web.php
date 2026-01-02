@@ -1,21 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProductController;
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// Route view data
-Route::get('/', [ProductController::class, 'index'])->name('project.view-data');
-Route::get('/view-data', [ProductController::class, 'index']) ->name('project.view-data');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Route tambah product
-Route::get('/project/tambah', [ProductController::class, 'tambah'])->name('project.tambah');
-Route::post('/project/tambah', [ProductController::class, 'simpanProduk'])->name('project.simpanProduk');
-
-// Route edit product
-Route::get('/project/edit/{product}', [ProductController::class, 'edit'])->name('project.edit');
-Route::put('/project/update/{product}', [ProductController::class, 'editProduct'])->name('project.update');
-
-// Route delete product
-Route::delete('/project/delete/{product}', [ProductController::class, 'delete'])->name('project.delete');
+require __DIR__.'/auth.php';
