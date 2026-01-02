@@ -428,6 +428,32 @@
                 </svg>
               </a>
             </li>
+            @auth
+            <li class="nav-item dropdown">
+                <a href="nav-link dropdown-toggle href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span>Halo, {{ Auth::user()->name }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                    <li>
+                    {{-- Form Logout (Wajib POST di Laravel) --}}
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger">Keluar</button>
+                    </form>
+                    </li>
+                </ul>
+            </li>
+            @endauth
+            {{-- kalau belum login --}}
+            @guest()
+                <li>
+                    <a href="{{ route('login') }}" class="nav-link">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span class="ms-1">Login / Daftar</span>
+                </a>
+                </li>
+            @endguest
           </ul>
         </div>
 
@@ -566,7 +592,7 @@
           <div class="col-md-6 d-flex flex-wrap">
             <div class="shipping">
               <span>We ship with:</span>
-              <img src="{{ asset('/') }}assets/img/page/arct-icon.png" alt="icon">
+              <img src="{{ asset('assets/img/page/arct-icon.png') }}" alt="icon">
               <img src="{{ asset('/') }}assets/img/page/dhl-logo.png" alt="icon">
             </div>
             <div class="payment-option">
@@ -577,9 +603,7 @@
             </div>
           </div>
           <div class="col-md-6 text-end">
-            <p>© Copyright 2022 Kaira. All rights reserved. Design by <a href="https://templatesjungle.com"
-                target="_blank">TemplatesJungle</a> Distribution By <a href="https://themewagon.com"
-              target="blank">ThemeWagon</a></p>
+            <p>© Copyright 2026 Laci Bunga. All rights reserved.</p>
           </div>
         </div>
       </div>

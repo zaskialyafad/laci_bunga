@@ -5,9 +5,7 @@
       <div class="row justify-content-center">
         <h1 class="section-title text-center mt-4" data-aos="fade-up">New Collections</h1>
         <div class="col-md-6 text-center" data-aos="fade-up" data-aos-delay="300">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe voluptas ut dolorum consequuntur, adipisci
-            repellat! Eveniet commodi voluptatem voluptate, eum minima, in suscipit explicabo voluptatibus harum,
-            quibusdam ex repellat eaque!</p>
+          <p>Seakan membuka laci kayu tua yang menyimpan aroma bunga kering dan surat cinta masa lalu, koleksi terbaru Laci Bunga hadir untuk menyapa jiwa nostalgiamu.</p>
         </div>
       </div>
       <div class="row">
