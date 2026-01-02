@@ -30,6 +30,15 @@ class ProductController extends Controller
         return view ( 'project.view-data', compact('products'));
     }
 
+    public function home() 
+    {
+        $products = Product::with(['category', 'gambar_produk', 'product_variation'])
+                    ->where('status', 'show')
+                    ->latest()
+                    ->get();        
+        return view('web.home-page', compact('products'));
+    }
+
     public function tambah()
     {
         // untuk panggil category agar bisa ditapilkan di dropdown
