@@ -12,15 +12,15 @@ class CategorySeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {
-        $data =[
-            ['name' => 'Dress'],
-            ['name' => 'Cardigan'],
-            ['name' => 'Blouse'],
-            ['name' => 'Skirt'],
-            ['name' => 'Accessories'],
-            ['name' => 'Others'],
-        ];
-        Category::insert($data);
-    }
+{
+    $data =[
+        ['name' => 'Dress'],
+        ['name' => 'Outerwear'], // Cardigan/Outer
+        ['name' => 'Tops'],      // Blouse
+        ['name' => 'Bottoms'],    // Skirt/Pants
+        ['name' => 'Accessories'],
+        ['name' => 'Set'],
+    ];
+    Category::insert($data);
+}
 }

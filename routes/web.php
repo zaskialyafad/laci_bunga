@@ -20,8 +20,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     
     // 1. Halaman Daftar Produk     
-    Route::get('/project/view-data', [ProductController::class, 'index'])->name('admin.dashboard');
-
+    Route::get('/project/view-data', [ProductController::class, 'index'])->name('project.view-data');
     // 2. Halaman Form Tambah Produk    
     Route::get('/project/tambah', [ProductController::class, 'tambah'])->name('project.tambah');
 

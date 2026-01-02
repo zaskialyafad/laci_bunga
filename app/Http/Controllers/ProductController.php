@@ -136,7 +136,7 @@ class ProductController extends Controller
         'product_name' => 'required|string',
         'category_id' => 'required|exists:categories,id',
         'description' => 'required|string',
-        'status' => 'required|in:show,archived',
+        'status' => 'required|in:show,archive',
         'image.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 

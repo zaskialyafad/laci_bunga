@@ -49,7 +49,7 @@
                         <div class="form-text text-end"><span id="sisaKarakter">{{ strlen($product->description) }}</span>/3000</div>
                     </div>
 
-                    {{-- 2. Sesuaikan value status dengan ENUM di Database (archive, bukan archived) --}}
+                    {{-- 2. Sesuaikan value status dengan ENUM di Database --}}
                     <div class="mb-3">
                         <label for="status" class="form-label">Status Produk<span class="text-danger">*</span></label>
                         <select name="status" id="status" class="form-select" required>

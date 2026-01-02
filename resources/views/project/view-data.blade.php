@@ -53,7 +53,7 @@
                                             <td rowspan="{{ $rowCount }}" class="text-center">{{ $index + 1 }}</td>
                                             <td rowspan="{{ $rowCount }}" class="text-center">
                                                 @if($product->gambar_produk->count() > 0)
-                                                <img src="{{ asset('storage/productsImg/'.$product->gambar_produk->first()->image) }}" width="70" class="rounded border">
+                                                <img src="{{ asset('storage/productsImg/' .$product->gambar_produk->first()->image) }}" width="70" class="rounded border">
                                                 @else
                                                     <img src="{{ asset('assets/img/no-image.png') }}" width="70" class="rounded border">
                                                 @endif
@@ -68,9 +68,9 @@
                                             {{-- Kolom Status --}}
                                             <td rowspan={{ $rowCount }} class="text-center">
                                                 @if($product->status === 'show')
-                                                    <span class="badge bg-success">Tampil</span>
+                                                    <span class="badge bg-success text-white">Tampil</span>
                                                 @else
-                                                    <span class="badge bg-secondary">Arsip</span>
+                                                    <span class="badge bg-secondary text-white">Arsip</span>
                                                 @endif
                                             </td>
                                         @endif

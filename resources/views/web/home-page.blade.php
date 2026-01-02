@@ -1,5 +1,7 @@
 @extends('layout.template-page')
 @section('content')
+
+{{-- billboard --}}
  <section id="billboard" class="bg-light py-5">
     <div class="container">
       <div class="row justify-content-center">
@@ -9,8 +11,10 @@
         </div>
       </div>
       <div class="row">
+        {{-- swiper --}}
         <div class="swiper main-swiper py-4" data-aos="fade-up" data-aos-delay="600">
           <div class="swiper-wrapper d-flex border-animation-left">
+            {{-- Banner Item 1 --}}
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
@@ -29,6 +33,7 @@
                 </div>
               </div>
             </div>
+            {{-- banner item 2 --}}
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
@@ -47,6 +52,7 @@
                 </div>
               </div>
             </div>
+            {{-- banner item 3 --}}
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
@@ -65,6 +71,7 @@
                 </div>
               </div>
             </div>
+            {{-- banner item 4 --}}
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
@@ -83,6 +90,7 @@
                 </div>
               </div>
             </div>
+            {{-- banner item 5 --}}
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
@@ -101,6 +109,7 @@
                 </div>
               </div>
             </div>
+            {{-- banner item 6 --}}
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
@@ -132,6 +141,7 @@
     </div>
   </section>
 
+  {{-- Fitur --}}
   <section class="features py-5">
     <div class="container">
       <div class="row">
@@ -175,11 +185,12 @@
     </div>
   </section>
 
+  {{-- Kategori --}}
   <section class="categories overflow-hidden">
     <div class="container">
       <div class="open-up" data-aos="zoom-out">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
                 <a href="index.html">
@@ -188,12 +199,12 @@
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="index.html" class="btn btn-common text-uppercase">Shop for men</a>
+                  <a href="index.html" class="btn btn-common text-uppercase">Top</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
                 <a href="index.html">
@@ -202,12 +213,26 @@
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="index.html" class="btn btn-common text-uppercase">Shop for women</a>
+                  <a href="index.html" class="btn btn-common text-uppercase">Buttom</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
+            <div class="cat-item image-zoom-effect">
+              <div class="image-holder">
+                <a href="index.html">
+                  <img src="{{ asset('/') }}assets/img/page/cat-item2.jpg" alt="categories" class="product-image img-fluid">
+                </a>
+              </div>
+              <div class="category-content">
+                <div class="product-button">
+                  <a href="index.html" class="btn btn-common text-uppercase">Dress</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
                 <a href="index.html">
@@ -216,7 +241,7 @@
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="index.html" class="btn btn-common text-uppercase">Shop accessories</a>
+                  <a href="index.html" class="btn btn-common text-uppercase">Accessories</a>
                 </div>
               </div>
             </div>
@@ -226,6 +251,7 @@
     </div>
   </section>
 
+  {{-- new arrival --}}
   <section id="new-arrival" class="new-arrival product-carousel py-5 position-relative overflow-hidden">
     <div class="container">
       <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
@@ -346,31 +372,7 @@
     </div>
   </section>
 
-  <section class="collection bg-light position-relative py-5">
-    <div class="container">
-      <div class="row">
-        <div class="title-xlarge text-uppercase txt-fx domino">Collection</div>
-        <div class="collection-item d-flex flex-wrap my-5">
-          <div class="col-md-6 column-container">
-            <div class="image-holder">
-              <img src="{{ asset('/') }}assets/img/page/single-image-2.jpg" alt="collection" class="product-image img-fluid">
-            </div>
-          </div>
-          <div class="col-md-6 column-container bg-white">
-            <div class="collection-content p-5 m-0 m-md-5">
-              <h3 class="element-title text-uppercase">Classic winter collection</h3>
-              <p>Dignissim lacus, turpis ut suspendisse vel tellus. Turpis purus, gravida orci, fringilla a. Ac sed eu
-                fringilla odio mi. Consequat pharetra at magna imperdiet cursus ac faucibus sit libero. Ultricies quam
-                nunc, lorem sit lorem urna, pretium aliquam ut. In vel, quis donec dolor id in. Pulvinar commodo mollis
-                diam sed facilisis at cursus imperdiet cursus ac faucibus sit faucibus sit libero.</p>
-              <a href="#" class="btn btn-dark text-uppercase mt-3">Shop Collection</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  {{-- best seller --}}
   <section id="best-sellers" class="best-sellers product-carousel py-5 position-relative overflow-hidden">
     <div class="container">
       <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
@@ -511,26 +513,7 @@
     </div>
   </section>
 
-  <section class="video py-5 overflow-hidden">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="video-content open-up" data-aos="zoom-out">
-          <div class="video-bg">
-            <img src="{{ asset('/') }}assets/img/page/video-image.jpg" alt="video" class="video-image img-fluid">
-          </div>
-          <div class="video-player">
-            <a class="youtube" href="https://www.youtube.com/embed/pjtsGzQjFM4">
-              <svg width="24" height="24" viewBox="0 0 24 24">
-                <use xlink:href="#play"></use>
-              </svg>
-              <img src="{{ asset('/') }}assets/img/page/text-pattern.png" alt="pattern" class="text-rotate">
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  {{-- testimoni --}}
   <section class="testimonials py-5 bg-light">
     <div class="section-header text-center mt-5">
       <h3 class="section-title">WE LOVE GOOD COMPLIMENT</h3>
@@ -573,6 +556,8 @@
     </div>
     <div class="testimonial-swiper-pagination d-flex justify-content-center mb-5"></div>
   </section>
+
+  {{-- related product --}}
 
   <section id="related-products" class="related-products product-carousel py-5 position-relative overflow-hidden">
     <div class="container">
@@ -694,104 +679,7 @@
     </div>
   </section>
 
-  <section class="blog py-5">
-    <div class="container">
-      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
-        <h4 class="text-uppercase">Read Blog Posts</h4>
-        <a href="index.html" class="btn-link">View All</a>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <article class="post-item">
-            <div class="post-image">
-              <a href="index.html">
-                <img src="{{ asset('/') }}assets/img/page/post-image1.jpg" alt="image" class="post-grid-image img-fluid">
-              </a>
-            </div>
-            <div class="post-content d-flex flex-wrap gap-2 my-3">
-              <div class="post-meta text-uppercase fs-6 text-secondary">
-                <span class="post-category">Fashion /</span>
-                <span class="meta-day"> jul 11, 2022</span>
-              </div>
-              <h5 class="post-title text-uppercase">
-                <a href="index.html">How to look outstanding in pastel</a>
-              </h5>
-              <p>Dignissim lacus,turpis ut suspendisse vel tellus.Turpis purus,gravida orci,fringilla...</p>
-            </div>
-          </article>
-        </div>
-        <div class="col-md-4">
-          <article class="post-item">
-            <div class="post-image">
-              <a href="index.html">
-                <img src="{{ asset('/') }}assets/img/page/post-image2.jpg" alt="image" class="post-grid-image img-fluid">
-              </a>
-            </div>
-            <div class="post-content d-flex flex-wrap gap-2 my-3">
-              <div class="post-meta text-uppercase fs-6 text-secondary">
-                <span class="post-category">Fashion /</span>
-                <span class="meta-day"> jul 11, 2022</span>
-              </div>
-              <h5 class="post-title text-uppercase">
-                <a href="index.html">Top 10 fashion trend for summer</a>
-              </h5>
-              <p>Turpis purus, gravida orci, fringilla dignissim lacus, turpis ut suspendisse vel tellus...</p>
-            </div>
-          </article>
-        </div>
-        <div class="col-md-4">
-          <article class="post-item">
-            <div class="post-image">
-              <a href="index.html">
-                <img src="{{ asset('/') }}assets/img/page/post-image3.jpg" alt="image" class="post-grid-image img-fluid">
-              </a>
-            </div>
-            <div class="post-content d-flex flex-wrap gap-2 my-3">
-              <div class="post-meta text-uppercase fs-6 text-secondary">
-                <span class="post-category">Fashion /</span>
-                <span class="meta-day"> jul 11, 2022</span>
-              </div>
-              <h5 class="post-title text-uppercase">
-                <a href="index.html">Crazy fashion with unique moment</a>
-              </h5>
-              <p>Turpis purus, gravida orci, fringilla dignissim lacus, turpis ut suspendisse vel tellus...</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="logo-bar py-5 my-5">
-    <div class="container">
-      <div class="row">
-        <div class="logo-content d-flex flex-wrap justify-content-between">
-          <img src="{{ asset('/') }}assets/img/page/logo1.png" alt="logo" class="logo-image img-fluid">
-          <img src="{{ asset('/') }}assets/img/page/logo2.png" alt="logo" class="logo-image img-fluid">
-          <img src="{{ asset('/') }}assets/img/page/logo3.png" alt="logo" class="logo-image img-fluid">
-          <img src="{{ asset('/') }}assets/img/page/logo4.png" alt="logo" class="logo-image img-fluid">
-          <img src="{{ asset('/') }}assets/img/page/logo5.png" alt="logo" class="logo-image img-fluid">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="newsletter bg-light" style="background: url({{ asset('/') }}assets/img/page/pattern-bg.png) no-repeat;">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-8 py-5 my-5">
-          <div class="subscribe-header text-center pb-3">
-            <h3 class="section-title text-uppercase">Sign Up for our newsletter</h3>
-          </div>
-          <form id="form" class="d-flex flex-wrap gap-2">
-            <input type="text" name="email" placeholder="Your Email Addresss" class="form-control form-control-lg">
-            <button class="btn btn-dark btn-lg text-uppercase w-100">Sign Up</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  {{-- instagram --}}
   <section class="instagram position-relative">
     <div class="d-flex justify-content-center w-100 position-absolute bottom-0 z-1">
       <a href="https://www.instagram.com/templatesjungle/" class="btn btn-dark px-5">Follow us on Instagram</a>

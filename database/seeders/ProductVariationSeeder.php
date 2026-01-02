@@ -12,70 +12,29 @@ class ProductVariationSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {
-        $data =[
-            [
-                'product_id' => 1,
-                 'size' => 'M',
-                'color' => 'Merah', 
-                 'stock' => 20,
-                 'price'=> 300000,
-                 'sku' => 'DRS-M-RED-001',
-                 'created_at' => now(),
-                 'updated_at' => now(),
-            ],
-            [
-                'product_id' => 1, 
-                'size' => 'L',
-                'color' => 'Biru', 
-                'stock' => 20,
-                'price'=> 300000,
-                'sku' => 'DRS-L-BLU-002',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_id' => 2,
-                 'size' => 'S',
-                'color' => 'Hijau', 
-                'stock' => 20,
-                'price'=> 300000,
-                'sku' => 'CRD-S-GRN-003',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_id' => 3, 
-                'size' => 'M',
-                'color' => 'Kuning', 
-                'price'=> 300000,
-                'stock' => 20,
-                'sku' => 'BLS-M-YEL-004',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'product_id' => 4, 
-                'size' => 'L',
-                'color' => 'Putih', 
-                'price'=> 300000,
-                'stock' => 20,
-                'sku' => 'SKRT-L-WHT-005',
-                'created_at' => now(),
-                'updated_at' => now(), 
-                
-            ],
-            [
-                'product_id' => 5,
-                'size' => 'All Size',
-                'color' => 'Coklat',
-                'stock' => 20,
-                'price'=> 300000,
-                'sku' => 'BLS-ALL-BROWN-006',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+{
+    $variations = [];
+    for ($i = 1; $i <= 20; $i++) {
+        // Menambahkan 2 variasi per produk (Misal: S/M dan L/XL atau warna berbeda)
+        $variations[] = [
+            'product_id' => $i,
+            'size' => ($i > 15) ? 'All Size' : 'S/M', // Aksesoris biasanya All Size
+            'color' => 'Muted Sage',
+            'stock' => 15,
+            'price' => ($i > 15) ? 125000 : 385000,
+            'sku' => "LB-".str_pad($i, 3, '0', STR_PAD_LEFT)."-SG",
+            'created_at' => now(), 'updated_at' => now(),
         ];
-        Product_variation::insert($data);
+        $variations[] = [
+            'product_id' => $i,
+            'size' => ($i > 15) ? 'All Size' : 'L/XL',
+            'color' => 'Dusty Rose',
+            'stock' => 10,
+            'price' => ($i > 15) ? 125000 : 385000,
+            'sku' => "LB-".str_pad($i, 3, '0', STR_PAD_LEFT)."-DR",
+            'created_at' => now(), 'updated_at' => now(),
+        ];
     }
+    Product_variation::insert($variations);
+}
 }
