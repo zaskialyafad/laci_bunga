@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Admin Laci Bunga</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('/') }}assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Admin Laci Bunga</div>
             </a>
 
             <!-- Divider -->
@@ -45,7 +45,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Data Produk</span></a>
             </li>
 
             <!-- Divider -->
@@ -412,6 +412,9 @@
             </div>
         </div>
     </div>
+
+    {{-- Sweeet Alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('/') }}assets/vendor/jquery/jquery.min.js"></script>

@@ -15,7 +15,7 @@ Route::post('/project/tambah', [ProductController::class, 'simpanProduk'])->name
 
 // Route edit product
 Route::get('/project/edit/{product}', [ProductController::class, 'edit'])->name('project.edit');
-Route::post('/project/update/{product}', [ProductController::class, 'editProduct'])->name('project.update');
+Route::put('/project/update/{product}', [ProductController::class, 'editProduct'])->name('project.update');
 
 // Route delete product
-Route::delete('/project/delete/{product}', [ProductController::class, 'destroy'])->name('project.delete');
+Route::delete('/project/delete/{product}', [ProductController::class, 'delete'])->name('project.delete');
