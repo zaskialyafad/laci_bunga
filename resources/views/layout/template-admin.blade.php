@@ -18,9 +18,10 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('/') }}assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-</head>
+    <link href="{{ asset('/') }}assets/css/sb-admin-2.min.css" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <body id="page-top">
 

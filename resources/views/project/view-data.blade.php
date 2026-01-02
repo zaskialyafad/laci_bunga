@@ -32,7 +32,7 @@
                             <th>Stok</th>
                             <th>Harga</th>
                             <th>SKU</th>
-                            <th>Deskripsi</th> {{-- Pindah ke belakang --}}
+                            <th>Deskripsi</th> 
                             <th style="width: 10%">Aksi</th>
                         </tr>
                     </thead>
@@ -41,7 +41,7 @@
                             @php 
                                 $variations = collect($product->product_variation ?? $product['product_variation'] ?? []);
                                 $rowCount = $variations->count() > 0 ? $variations->count() : 1;
-                                // mengelmpokkan warna yang sama
+                                // mengelompokkan warna yang sama
                                 $grupWarna = $variations-> groupBy('color');
                             @endphp
                             @php $barisPertama = true; @endphp
