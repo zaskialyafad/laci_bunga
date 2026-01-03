@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
+{
+    public function index()
+    {
+        // Featured products untuk banner
+        $produkBanner = Product::with(['gambar_produk', 'product_variation', 'category'])
+            ->where('status', 'show')
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
+        // Semua kategori
+        $categories = Category::with(['products' => function($query) {
+            $query->where('status', 'show')->with('gambar_produk');
+        }])->get();
+
+        // New Arrivals (8 produk terbaru)
+        $newArrivals = Product::with(['gambar_produk', 'product_variation'])
+            ->where('status', 'show')
+            ->orderBy('created_at', 'desc')
+            ->take(8)
+            ->get();
+
+        // Best Sellers (random 8 produk untuk simulasi best seller)
+        $bestSellers = Product::with(['gambar_produk', 'product_variation'])
+            ->where('status', 'show')
+            ->inRandomOrder()
+            ->take(8)
+            ->get();
+
+        // Related Products (random 6 produk)
+        $relatedProducts = Product::with(['gambar_produk', 'product_variation'])
+            ->where('status', 'show')
+            ->inRandomOrder()
+            ->take(6)
+            ->get();
+
+        return view('home-page', compact(
+            'featuredProducts',
+            'categories',
+            'newArrivals',
+            'bestSellers',
+            'relatedProducts'
+        ));
+    }
+}

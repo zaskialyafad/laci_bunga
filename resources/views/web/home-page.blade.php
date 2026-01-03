@@ -10,124 +10,35 @@
           <p>Seakan membuka laci kayu tua yang menyimpan aroma bunga kering dan surat cinta masa lalu, koleksi terbaru Laci Bunga hadir untuk menyapa jiwa nostalgiamu.</p>
         </div>
       </div>
-      <div class="row">
-        {{-- swiper --}}
+      {{-- Swiper --}}
+      <div class="row">        
         <div class="swiper main-swiper py-4" data-aos="fade-up" data-aos-delay="600">
           <div class="swiper-wrapper d-flex border-animation-left">
-            {{-- Banner Item 1 --}}
+            {{-- Banner Item  --}}
+            @foreach ($produkBanner->take(6) as $product )
             <div class="swiper-slide">
               <div class="banner-item image-zoom-effect">
                 <div class="image-holder">
-                  <a href="#">
-                    <img src="{{ asset('/') }}assets/img/page/banner-image-6.jpg" alt="product" class="img-fluid">
+                  <a href="{{route ('web.detail-produk', $product->id) }}">
+                    @if($product->gambar_produk->count()> 0)
+                        <img src="{{asset('storage/productsImg/' . $p->gambar_produk->first()->image)}}" alt="product" class="img-fluid">
+                    @else
+                        <img src="{{ asset('assets/img/no-image.png') }}" alt="">
+                    @endif
                   </a>
                 </div>
                 <div class="banner-content py-4">
                   <h5 class="element-title text-uppercase">
-                    <a href="index.html" class="item-anchor">Soft leather jackets</a>
+                    <a href="{{ route('web.detail-produk', $product->id) }}" class="item-anchor">{{ $product->product_name }}</a>
                   </h5>
-                  <p>Scelerisque duis aliquam qui lorem ipsum dolor amet, consectetur adipiscing elit.</p>
+                  <p>{{ str::limit($product->description, 80) }}</p>
                   <div class="btn-left">
-                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
+                    <a href="{{ route('web.detail-product', $product->id) }}" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
                   </div>
                 </div>
               </div>
             </div>
-            {{-- banner item 2 --}}
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="#">
-                    <img src="{{ asset('/') }}assets/img/page/banner-image-1.jpg" alt="product" class="img-fluid">
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    <a href="index.html" class="item-anchor">Soft leather jackets</a>
-                  </h5>
-                  <p>Scelerisque duis aliquam qui lorem ipsum dolor amet, consectetur adipiscing elit.</p>
-                  <div class="btn-left">
-                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {{-- banner item 3 --}}
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="#">
-                    <img src="{{ asset('/') }}assets/img/page/banner-image-2.jpg" alt="product" class="img-fluid">
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    <a href="index.html" class="item-anchor">Soft leather jackets</a>
-                  </h5>
-                  <p>Scelerisque duis aliquam qui lorem ipsum dolor amet, consectetur adipiscing elit.</p>
-                  <div class="btn-left">
-                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {{-- banner item 4 --}}
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="#">
-                    <img src="{{ asset('/') }}assets/img/page/banner-image-3.jpg" alt="product" class="img-fluid">
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    <a href="index.html" class="item-anchor">Soft leather jackets</a>
-                  </h5>
-                  <p>Scelerisque duis aliquam qui lorem ipsum dolor amet, consectetur adipiscing elit.</p>
-                  <div class="btn-left">
-                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {{-- banner item 5 --}}
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="#">
-                    <img src="{{ asset('/') }}assets/img/page/banner-image-4.jpg" alt="product" class="img-fluid">
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    <a href="index.html" class="item-anchor">Out crop sweater</a>
-                  </h5>
-                  <p>Scelerisque duis aliquam qui lorem ipsum dolor amet, consectetur adipiscing elit.</p>
-                  <div class="btn-left">
-                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {{-- banner item 6 --}}
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="#">
-                    <img src="{{ asset('/') }}assets/img/page/banner-image-5.jpg" alt="product" class="img-fluid">
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    <a href="index.html" class="item-anchor">Soft leather jackets</a>
-                  </h5>
-                  <p>Scelerisque duis aliquam qui lorem ipsum dolor amet, consectetur adipiscing elit.</p>
-                  <div class="btn-left">
-                    <a href="#" class="btn-link fs-6 text-uppercase item-anchor text-decoration-none">Discover Now</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            @endforeach
           </div>
           <div class="swiper-pagination"></div>
         </div>
@@ -150,8 +61,8 @@
             <svg width="38" height="38" viewBox="0 0 24 24">
               <use xlink:href="#calendar"></use>
             </svg>
-            <h4 class="element-title text-capitalize my-3">Book An Appointment</h4>
-            <p>At imperdiet dui accumsan sit amet nulla risus est ultricies quis.</p>
+            <h4 class="element-title text-capitalize my-3">Bahan Pilihan</h4>
+            <p>Menggunakan katun organik dan linen berkualitas tinggi yang sejuk serta nyaman untuk kulit sensitif.</p>
           </div>
         </div>
         <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="300">
@@ -159,8 +70,8 @@
             <svg width="38" height="38" viewBox="0 0 24 24">
               <use xlink:href="#shopping-bag"></use>
             </svg>
-            <h4 class="element-title text-capitalize my-3">Pick up in store</h4>
-            <p>At imperdiet dui accumsan sit amet nulla risus est ultricies quis.</p>
+            <h4 class="element-title text-capitalize my-3">Detail Estetik</h4>
+            <p>Setiap koleksi dipercantik dengan sentuhan bordir tangan dan renda vintage yang memberikan kesan klasik.</p>
           </div>
         </div>
         <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="600">
@@ -168,8 +79,8 @@
             <svg width="38" height="38" viewBox="0 0 24 24">
               <use xlink:href="#gift"></use>
             </svg>
-            <h4 class="element-title text-capitalize my-3">Special packaging</h4>
-            <p>At imperdiet dui accumsan sit amet nulla risus est ultricies quis.</p>
+            <h4 class="element-title text-capitalize my-3">Kemasan Cantik</h4>
+            <p>Setiap produk dikemas rapi dengan sentuhan estetik, sangat cocok untuk dijadikan kado spesial.</p>
           </div>
         </div>
         <div class="col-md-3 text-center" data-aos="fade-in" data-aos-delay="900">
@@ -177,8 +88,8 @@
             <svg width="38" height="38" viewBox="0 0 24 24">
               <use xlink:href="#arrow-cycle"></use>
             </svg>
-            <h4 class="element-title text-capitalize my-3">free global returns</h4>
-            <p>At imperdiet dui accumsan sit amet nulla risus est ultricies quis.</p>
+            <h4 class="element-title text-capitalize my-3">Nyaman Dipakai</h4>
+            <p>Tersedia dalam berbagai ukuran, mulai dari S hingga XL dengan potongan yang menyesuaikan bentuk tubuh.</p>
           </div>
         </div>
       </div>

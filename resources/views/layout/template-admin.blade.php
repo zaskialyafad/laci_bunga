@@ -20,7 +20,9 @@
     <!-- Custom styles for this template-->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="{{ asset('/') }}assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/') }}assets/css/style.css" rel="stylesheet">
+
 
 <body id="page-top">
 
