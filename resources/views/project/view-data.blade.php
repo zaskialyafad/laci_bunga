@@ -8,7 +8,7 @@
             Data Produk
         </h1>
         {{-- button tambah data --}}
-        <a href="{{ route('project.tambah') }}" class="btn btn-primary mb-3">
+        <a href="{{ route('admin.tambah') }}" class="btn btn-primary mb-3">
             <i class="fas fa-plus"></i> Tambah Data
         </a>
     </div>
@@ -80,7 +80,7 @@
                                                 {{ $v->color ?? '-' }}
                                             </td>
                                         @endif
-                                        {{-- Kolom Variasi (Muncul di setiap baris) --}}
+                                        {{-- Kolom Variasi --}}
                                         <td class="text-center">{{ $v->size ?? '-' }}</td>
                                         <td class="text-center font-weight-bold">{{ $v->stock }}</td>
                                         <td class="text-end text-primary fw-bold">
@@ -97,13 +97,13 @@
                                             </td>
                                             <td rowspan="{{ $rowCount }}" class="text-center">
                                                 <div class="btn-group-vertical btn-group-sm">
-                                                    <a href="{{ route('project.edit', $product->id) }}" class="btn btn-warning">
+                                                    <a href="{{ route('admin.edit', $product->id) }}" class="btn btn-warning">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </a>
                                                     <button type="button" class="btn btn-danger" onclick="hapusProduk('{{ $product->id }}', '{{ $product->product_name }}')">
                                                         <i class="fas fa-trash"></i> Hapus
                                                     </button>
-                                                    <form id="form-hapus-{{ $product->id }}" action="{{ route('project.delete', $product->id) }}" method="POST" style="display: none;">
+                                                    <form id="form-hapus-{{ $product->id }}" action="{{ route('admin.delete', $product->id) }}" method="POST" style="display: none;">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

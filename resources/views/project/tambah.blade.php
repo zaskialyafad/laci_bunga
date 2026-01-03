@@ -17,7 +17,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('project.simpanProduk') }}" method="POST" enctype="multipart/form-data" id="formTambahProduk">
+            <form action="{{ route('admin.simpanProduk') }}" method="POST" enctype="multipart/form-data" id="formTambahProduk">
                 @csrf
                 <input type="hidden" id="productId" value="">
                 
@@ -143,7 +143,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> Simpan Produk
                     </button>
-                    <a href="{{ route('project.view-data') }}" class="btn btn-secondary">Kembali</a>
+                    <a href="{{ route('admin.view-data') }}" class="btn btn-secondary">Kembali</a>
                 </div>
             </form>
         </div>

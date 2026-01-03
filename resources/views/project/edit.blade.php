@@ -18,7 +18,7 @@
             @endif
 
             {{-- 1. Perbaikan Tanda Kutip di Form Action --}}
-            <form action="{{ route('project.update', $product->id) }}" method="POST" enctype="multipart/form-data" id="formEditProduk">
+            <form action="{{ route('admin.update', $product->id) }}" method="POST" enctype="multipart/form-data" id="formEditProduk">
                 @csrf
                 @method('PUT')
                 <input type="hidden" id="productId" value="{{ $product->id }}">
@@ -148,7 +148,7 @@
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Produk</button>
-                    <a href="{{ route('project.view-data') }}" class="btn btn-secondary">Kembali</a>
+                    <a href="{{ route('admin.view-data') }}" class="btn btn-secondary">Kembali</a>
                 </div>
             </form>
         </div>

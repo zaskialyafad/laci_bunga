@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProductController::class, 'home'])->name('home');
+Route::get('/home-page', [HomeController::class, 'index'])->name('web.home-page');
+Route::get('/all-produk', [HomeController::class, 'index'])->name('web.all-produk');
+Route::get('/detail-produk/{product}', [HomeController::class, 'index'])->name('web.detail-produk');
 
-Route::get('/dashboard', [App\Http\Controllers\ProductController::class, 'index'])
+
+Route::get('/dashboard', [ProductController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -20,21 +24,21 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     
     // 1. Halaman Daftar Produk     
-    Route::get('/project/view-data', [ProductController::class, 'index'])->name('project.view-data');
+    Route::get('/admin/view-data', [ProductController::class, 'index'])->name('admin.view-data');
     // 2. Halaman Form Tambah Produk    
-    Route::get('/project/tambah', [ProductController::class, 'tambah'])->name('project.tambah');
+    Route::get('/admin/tambah', [ProductController::class, 'tambah'])->name('admin.tambah');
 
     // 3. Simpan Produk Baru    
-    Route::post('/project/simpan', [ProductController::class, 'simpanProduk'])->name('project.simpanProduk');
+    Route::post('/admin/simpan', [ProductController::class, 'simpanProduk'])->name('admin.simpanProduk');
 
     // 4. Halaman Edit Produk
-    Route::get('/project/edit/{product}', [ProductController::class, 'edit'])->name('project.edit');
+    Route::get('/admin/edit/{product}', [ProductController::class, 'edit'])->name('admin.edit');
 
     // 5. Update Data Produk 
-    Route::put('/project/update/{product}', [ProductController::class, 'editProduct'])->name('project.update');
+    Route::put('/admin/update/{product}', [ProductController::class, 'editProduct'])->name('admin.update');
 
     // 6. Hapus Produk 
-    Route::delete('/project/delete/{product}', [ProductController::class, 'delete'])->name('project.delete');
+    Route::delete('/admin/delete/{product}', [ProductController::class, 'delete'])->name('admin.delete');
 });
 
 require __DIR__.'/auth.php';

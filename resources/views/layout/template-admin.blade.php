@@ -35,7 +35,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="bi bi-flower1"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">Admin Laci Bunga</div>
             </a>
@@ -45,7 +45,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{ route('admin.view-data') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Data Produk</span></a>
             </li>
@@ -143,14 +143,6 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
-            <!-- Sidebar Message -->
-            <div class="sidebar-card d-none d-lg-flex">
-                <img class="sidebar-card-illustration mb-2" src="{{ asset('/') }}assets/img/undraw_rocket.svg" alt="...">
-                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-            </div>
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -207,6 +199,12 @@
                                     </div>
                                 </form>
                             </div>
+                        </li>
+                        <li class="nav-item no-arrow mx-1">
+                            <a class="nav-link" href="{{ route('web.home-page') }}" title="Halaman Depan Toko">
+                                <i class="fas fa-store fa-fw mr-2 text-gray-400"></i>
+                                <span class="d-none d-lg-inline text-gray-600 small font-weight-bold">Home Page</span>
+                            </a>
                         </li>
 
                         <!-- Nav Item - Alerts -->

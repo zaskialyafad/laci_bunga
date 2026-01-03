@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Product_variation;
+use App\Models\Gambar_produk;
 
 class HomeController extends Controller
 {
@@ -43,8 +45,8 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        return view('home-page', compact(
-            'featuredProducts',
+        return view('web.home-page', compact(
+            'produkBanner',
             'categories',
             'newArrivals',
             'bestSellers',
