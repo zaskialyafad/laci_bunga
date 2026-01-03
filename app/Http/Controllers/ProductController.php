@@ -27,14 +27,14 @@ class ProductController extends Controller
     {
         //ambil semua products
         $products = Product::with(['category', 'gambar_produk', 'product_variation'])->latest()->get();        
-        return view ( 'project.view-data', compact('products'));
+        return view ( 'admin.view-data', compact('products'));
     }
 
     public function tambah()
     {
         // untuk panggil category agar bisa ditapilkan di dropdown
         $category = Category::all();
-        return view('project.tambah', compact('category'));
+        return view('admin.tambah', compact('category'));
     }
 
     public function simpanProduk(Request $request)
@@ -104,7 +104,7 @@ class ProductController extends Controller
 
 
             DB::commit();
-            return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');
+            return redirect()->route('admin.view-data')->with('success','Product berhasil ditambahkan!');
         } catch (\Exception $e) {
 
          // rollback jika terjadi error
@@ -118,7 +118,7 @@ class ProductController extends Controller
         // menampilkan detail produk yang akan di edit
         $product->load(['category','gambar_produk', 'product_variation']);
         $category = Category::all();
-        return view ('project.edit', compact('product','category'));
+        return view ('admin.edit', compact('product','category'));
     }
 
     public function editProduct(Request $request, Product $product)
@@ -188,7 +188,7 @@ class ProductController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('project.view-data')->with('success', 'Produk berhasil diperbarui!');
+        return redirect()->route('admin.view-data')->with('success', 'Produk berhasil diperbarui!');
     } catch (\Exception $e) {
         DB::rollBack();
         return redirect()->back()->withInput()->with('error', 'Gagal update: ' . $e->getMessage());
@@ -210,12 +210,76 @@ class ProductController extends Controller
 
             DB::commit();
             
-            return redirect()->route('project.view-data')->with('success', 'Produk berhasil dihapus!');
+            return redirect()->route('admin.view-data')->with('success', 'Produk berhasil dihapus!');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }    
+    }
+
+    public function allProduk (Request $request)
+    {
+        $query = Product::with(['category', 'gambar_produk', 'product_variation'])->where('status', 'show');
+        $category = Category::all();        
+
+        // Filter berdasarkan pencarian
+        if ($request->has('search') && $request->search != '') {
+            $query->where('product_name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category_id', $request->category);
+        }
+        
+        // Sorting
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'name_asc':
+                    $query->orderBy('product_name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('product_name', 'desc');
+                    break;
+                case 'newest':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $products = $query->paginate(12);
+        return view ( 'web.all-produk', compact('products', 'category'));
+    }
+
+    public function detail($id)
+    {
+        $product = Product::with(['gambar_produk', 'product_variation', 'category'])
+            ->where('status', 'show')
+            ->findOrFail($id);
+
+        // Ambil produk terkait (produk dengan kategori yang sama)
+        $relatedProducts = Product::with(['gambar_produk', 'product_variation'])
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $id)
+            ->where('status', 'show')
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        // Kelompokkan variasi berdasarkan warna
+        $colorGroups = $product->product_variation->groupBy('color');
+
+        // Ambil semua ukuran yang tersedia
+        $sizes = $product->product_variation->pluck('size')->unique()->values();
+
+        return view('web.detail-product', compact('product', 'relatedProducts', 'colorGroups', 'sizes'));
     }
 }

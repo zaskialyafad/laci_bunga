@@ -161,7 +161,7 @@
 
       <form role="search" method="get" class="form-group" action="">
         <input type="search" id="search-form" class="form-control border-0 border-bottom"
-          placeholder="Type and press enter" value="" name="s" />
+          placeholder="Type and press enter" value="{{ request('search') }}" name="s" />
         <button type="submit" class="search-submit border-0 position-absolute bg-white"
           style="top: 15px;right: 15px;"><svg class="search" width="24" height="24">
             <use xlink:href="#search"></use>
@@ -171,27 +171,12 @@
       <h5 class="cat-list-title">Browse Categories</h5>
 
       <ul class="cat-list">
-        <li class="cat-list-item">
-          <a href="#" title="Jackets">Jackets</a>
-        </li>
-        <li class="cat-list-item">
-          <a href="#" title="T-shirts">T-shirts</a>
-        </li>
-        <li class="cat-list-item">
-          <a href="#" title="Handbags">Handbags</a>
-        </li>
-        <li class="cat-list-item">
-          <a href="#" title="Accessories">Accessories</a>
-        </li>
-        <li class="cat-list-item">
-          <a href="#" title="Cosmetics">Cosmetics</a>
-        </li>
-        <li class="cat-list-item">
-          <a href="#" title="Dresses">Dresses</a>
-        </li>
-        <li class="cat-list-item">
-          <a href="#" title="Jumpsuits">Jumpsuits</a>
-        </li>
+
+        @foreach ($category as $cat )
+          <li class="cat-list-item">
+            <a href="#" title="{{ $cat->name }}">{{ $cat->name }}</a>
+          </li>
+        @endforeach
       </ul>
 
     </div>
@@ -247,7 +232,7 @@
 
         <div class="col-auto">
           <a class="navbar-brand text-white" href="{{ route('web.home-page') }}">
-            <img src="{{ asset('/') }}assets/img/page/main-logo.png" class="img-fluid" style="width: 150px; height: 50px; object-fit: contain;" alt="logo ">
+            <img src="{{ asset('/') }}assets/img/page/main-logo.png" class="img-fluid" style="width: 120px; height: 40px; object-fit: contain;" alt="logo ">
           </a>
         </div>
 

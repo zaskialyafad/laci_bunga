@@ -6,8 +6,8 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/home-page', [HomeController::class, 'index'])->name('web.home-page');
-Route::get('/all-produk', [HomeController::class, 'index'])->name('web.all-produk');
-Route::get('/detail-produk/{product}', [HomeController::class, 'index'])->name('web.detail-produk');
+Route::get('/all-produk', [ProductController::class, 'allProduk'])->name('web.all-produk');
+Route::get('/detail-produk/{product}', [ProductController::class, 'detai;'])->name('web.detail-produk');
 
 
 Route::get('/dashboard', [ProductController::class, 'index'])
