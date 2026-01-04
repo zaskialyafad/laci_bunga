@@ -32,7 +32,7 @@ class ProductController extends Controller
 
     public function tambah()
     {
-        // untuk panggil category agar bisa ditapilkan di dropdown
+
         $category = Category::all();
         return view('project.tambah', compact('category'));
     }
@@ -104,7 +104,7 @@ class ProductController extends Controller
 
 
             DB::commit();
-            return redirect()->route('project.view-data')->with('success','Product berhasil ditambahkan!');
+            return redirect()->route('admin.view-data')->with('success','Product berhasil ditambahkan!');
         } catch (\Exception $e) {
 
          // rollback jika terjadi error

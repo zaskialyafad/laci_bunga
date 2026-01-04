@@ -25,12 +25,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Admin Product Management
-        Route::get('/view-data', [ProductController::class, 'index'])->name('admin.view-data');
-        Route::get('/tambah', [ProductController::class, 'tambah'])->name('admin.tambah');
-        Route::post('/simpan', [ProductController::class, 'simpanProduk'])->name('admin.simpanProduk');
-        Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('admin.edit');
-        Route::put('/update/{product}', [ProductController::class, 'editProduct'])->name('admin.update');
-        Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('admin.delete');
+    Route::prefix('admin')->name('admin.')->group(function() {
+        Route::get('/view-data', [ProductController::class, 'index'])->name('view-data');
+        Route::get('/tambah', [ProductController::class, 'tambah'])->name('tambah');
+        Route::post('/simpan', [ProductController::class, 'simpanProduk'])->name('simpanProduk');
+        Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
+        Route::put('/update/{product}', [ProductController::class, 'editProduct'])->name('update');
+        Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('delete');
+    });
     
 
     // Cart Routes

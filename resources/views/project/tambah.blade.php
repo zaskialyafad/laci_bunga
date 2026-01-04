@@ -65,7 +65,7 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Upload Gambar Produk<span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="image" name="image[]" multiple required>
-                        <small class="text-muted">Ukuran maksimal 2MB. Format: JPG, JPEG, PNG. Maksimal 9 gambar.</small>
+                        <small class="text-muted">Ukuran maksimal 2MB. Format: JPG, JPEG, PNG.</small>
                     </div>
                 </div>
 
