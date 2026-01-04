@@ -15,7 +15,7 @@ class CheckoutController extends Controller
         // simpan data order dan alamat
         $order = new Order();
         $order->order_number = 'INV-' . uniqid();
-        $order->user_id = auth()->id(); 
+        $order->user_id = auth()->id();
         $order->receiver_name = $request->receiver_name;
         $order->phone = $request->phone;
         $order->address = $request->address;
@@ -24,7 +24,7 @@ class CheckoutController extends Controller
         
         // konfigurasi MIdtrans
         Config::$serverKey = config('services.midtrans.serverKey');
-        Config::$isProduction = false; // Sandbox
+        Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
 

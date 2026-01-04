@@ -9,7 +9,7 @@
 </section>
 
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
-<script>
+<script type="text/javascript"></script>>
     document.getElementById('pay-button').onclick = function(){
         snap.pay('{{ $snapToken }}',{
             onSuccess: function(result){windiw.lcation.href = '/success';}
