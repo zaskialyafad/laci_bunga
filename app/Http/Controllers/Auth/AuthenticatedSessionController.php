@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if ($request->user()->role === 'admin'){
-            return redirect()->intended('/project/view-data');
+            return redirect()->intended('/admin/view-data');
         }
         return redirect()->intended('/web/home-page');
     }

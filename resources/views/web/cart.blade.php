@@ -150,6 +150,26 @@
                         </div>
                     </div>
                 </div>
+                <form action="{{ route('checkout.process') }}" method="post">
+                    @csrf
+                    <h5 class="mb-3"> Informasi Pengiriman</h5>
+                    <div class="mb-2`">
+                        <input type="text" name="receiver_name" class="form-control" placeholder="Nama Penerima" required>
+                    </div>
+                    <div class="mb-2`">
+                        <input type="text" name="phone" class="form-control" placeholder="Nomor Telepon" required>
+                    </div>
+                    <div class="mb-3`">
+                        <textarea name="address" class="form-control" placeholder="Alamat Lengkap (Jalan, No. rumah, desa/kelurahan, kecamatan, kota/kabupaten, Provinsi, kode pos)" rows="3" required></textarea>
+                    </div>
+
+                    {{-- Hidden input untuk total harga --}}
+                    <input type="hidden" name="total_price" value="{{ $subtotal }}">
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Checkout & Pay Now
+                    </button>
+                </form>
             </div>
         @else
             {{-- Empty Cart --}}
