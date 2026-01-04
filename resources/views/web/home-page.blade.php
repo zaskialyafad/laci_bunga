@@ -1,6 +1,13 @@
 @extends('layout.template-page')
 @section('content')
-
+<div class="container mt-3">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+</div>
 {{-- billboard --}}
  <section id="billboard" class="bg-light py-5">
     <div class="container">
@@ -183,11 +190,29 @@
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
                 </a>
-                <a href="index.html" class="btn-icon btn-wishlist">
-                  <svg width="24" height="24" viewBox="0 0 24 24">
-                    <use xlink:href="#heart"></use>
-                  </svg>
-                </a>
+                <div class="btn-wishlist-container position-absolute top-0 end-0 m-3" style="z-index: 5;">
+                    <form action="{{ route('wishlist.toggle') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        
+                        @php
+                            $isFavorit = false;
+                            if(auth()->check()) {
+                                $isFavorit = \App\Models\Wishlist::where('user_id', auth()->id())
+                                            ->where('product_id', $product->id)
+                                            ->exists();
+                            }
+                        @endphp
+
+                        <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm" style="width: 35px; height: 35px; border: none;">
+                            @if($isFavorit)
+                                <i class="fas fa-heart text-danger"></i> {{-- Hati Merah --}}
+                            @else
+                                <i class="far fa-heart"></i> {{-- Hati Kosong --}}
+                            @endif
+                        </button>
+                    </form>
+                </div>
                 <div class="product-content">
                   <h5 class="element-title text-uppercase fs-5 mt-3">
                     <a href="{{ route('web.detail-produk', $product->id) }}">
@@ -245,11 +270,29 @@
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
                 </a>
-                <a href="index.html" class="btn-icon btn-wishlist">
-                  <svg width="24" height="24" viewBox="0 0 24 24">
-                    <use xlink:href="#heart"></use>
-                  </svg>
-                </a>
+                <div class="btn-wishlist-container position-absolute top-0 end-0 m-3" style="z-index: 5;">
+                    <form action="{{ route('wishlist.toggle') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        
+                        @php
+                            $isFavorit = false;
+                            if(auth()->check()) {
+                                $isFavorit = \App\Models\Wishlist::where('user_id', auth()->id())
+                                            ->where('product_id', $product->id)
+                                            ->exists();
+                            }
+                        @endphp
+
+                        <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm" style="width: 35px; height: 35px; border: none;">
+                            @if($isFavorit)
+                                <i class="fas fa-heart text-danger"></i> {{-- Hati Merah --}}
+                            @else
+                                <i class="far fa-heart"></i> {{-- Hati Kosong --}}
+                            @endif
+                        </button>
+                    </form>
+                </div>                
                 <div class="product-content">
                   <h5 class="element-title text-uppercase fs-5 mt-3">
                     <a href="{{ route('web.detail-produk', $product->id) }}">
@@ -354,11 +397,29 @@
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
                 </a>
-                <a href="index.html" class="btn-icon btn-wishlist">
-                  <svg width="24" height="24" viewBox="0 0 24 24">
-                    <use xlink:href="#heart"></use>
-                  </svg>
-                </a>
+                <div class="btn-wishlist-container position-absolute top-0 end-0 m-3" style="z-index: 5;">
+                    <form action="{{ route('wishlist.toggle') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        
+                        @php
+                            $isFavorit = false;
+                            if(auth()->check()) {
+                                $isFavorit = \App\Models\Wishlist::where('user_id', auth()->id())
+                                            ->where('product_id', $product->id)
+                                            ->exists();
+                            }
+                        @endphp
+
+                        <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm" style="width: 35px; height: 35px; border: none;">
+                            @if($isFavorit)
+                                <i class="fas fa-heart text-danger"></i> {{-- Hati Merah --}}
+                            @else
+                                <i class="far fa-heart"></i> {{-- Hati Kosong --}}
+                            @endif
+                        </button>
+                    </form>
+                </div>
                 <div class="product-content">
                   <h5 class="element-title text-uppercase fs-5 mt-3">
                     <a href="{{ route('web.detail-produk', $product->id) }}">

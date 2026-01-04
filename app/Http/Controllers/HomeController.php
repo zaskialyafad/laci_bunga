@@ -20,7 +20,7 @@ class HomeController extends Controller
             ->get();
 
         // Semua kategori
-        $categories = Category::with(['products' => function($query) {
+        $category = Category::with(['products' => function($query) {
             $query->where('status', 'show')->with('gambar_produk');
         }])->get();
 
@@ -47,10 +47,11 @@ class HomeController extends Controller
 
         return view('web.home-page', compact(
             'produkBanner',
-            'categories',
+            'category',
             'newArrivals',
             'bestSellers',
             'relatedProducts'
         ));
     }
+    
 }

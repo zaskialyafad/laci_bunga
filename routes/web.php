@@ -3,42 +3,51 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/home-page', [HomeController::class, 'index'])->name('web.home-page');
+
+
+// --- GUEST ROUTES (Bisa diakses tanpa login) ---
+Route::get('/', [HomeController::class, 'index'])->name('web.home-page');
 Route::get('/all-produk', [ProductController::class, 'allProduk'])->name('web.all-produk');
-Route::get('/detail-produk/{product}', [ProductController::class, 'detai;'])->name('web.detail-produk');
+Route::get('/detail-produk/{product}', [ProductController::class, 'detail'])->name('web.detail-produk');
 
-
-Route::get('/dashboard', [ProductController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::middleware('auth')->group(function () {
+// --- AUTH ROUTES (Harus login) ---
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Dashboard & Profile
+    Route::get('/dashboard', [ProductController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-// Grup Route untuk ADMIN
-Route::middleware(['auth'])->group(function () {
-    
-    // 1. Halaman Daftar Produk     
-    Route::get('/admin/view-data', [ProductController::class, 'index'])->name('admin.view-data');
-    // 2. Halaman Form Tambah Produk    
-    Route::get('/admin/tambah', [ProductController::class, 'tambah'])->name('admin.tambah');
+    // Admin Product Management
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/view-data', [ProductController::class, 'index'])->name('admin.view-data');
+        Route::get('/tambah', [ProductController::class, 'tambah'])->name('admin.tambah');
+        Route::post('/simpan', [ProductController::class, 'simpanProduk'])->name('admin.simpanProduk');
+        Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('admin.edit');
+        Route::put('/update/{product}', [ProductController::class, 'editProduct'])->name('admin.update');
+        Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('admin.delete');
+    });
 
-    // 3. Simpan Produk Baru    
-    Route::post('/admin/simpan', [ProductController::class, 'simpanProduk'])->name('admin.simpanProduk');
+    // Cart Routes
+    Route::prefix('cart')->name('cart.')->group(function() {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/add', [CartController::class, 'add'])->name('add');
+        Route::patch('/update/{id}', [CartController::class, 'update'])->name('update');
+        Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('remove');
+        Route::delete('/clear', [CartController::class, 'clear'])->name('clear');
+    });
 
-    // 4. Halaman Edit Produk
-    Route::get('/admin/edit/{product}', [ProductController::class, 'edit'])->name('admin.edit');
-
-    // 5. Update Data Produk 
-    Route::put('/admin/update/{product}', [ProductController::class, 'editProduct'])->name('admin.update');
-
-    // 6. Hapus Produk 
-    Route::delete('/admin/delete/{product}', [ProductController::class, 'delete'])->name('admin.delete');
+    // Wishlist Routes
+    Route::prefix('wishlist')->name('wishlist.')->group(function() {
+        Route::get('/', [WishlistController::class, 'index'])->name('index');
+        Route::post('/toggle', [WishlistController::class, 'toggle'])->name('toggle');
+        Route::delete('/remove/{id}', [WishlistController::class, 'remove'])->name('remove');
+    });
 });
 
 require __DIR__.'/auth.php';

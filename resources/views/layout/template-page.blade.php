@@ -16,6 +16,7 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendor.css') }}">
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,296 +154,136 @@
     </defs>
   </svg>
 
-  <div class="preloader text-white fs-6 text-uppercase overflow-hidden"></div>
 
- {{-- search popup --}}
-  <div class="search-popup">
-    <div class="search-popup-container">
-
-      <form role="search" method="get" class="form-group" action="">
-        <input type="search" id="search-form" class="form-control border-0 border-bottom"
-          placeholder="Type and press enter" value="{{ request('search') }}" name="s" />
-        <button type="submit" class="search-submit border-0 position-absolute bg-white"
-          style="top: 15px;right: 15px;"><svg class="search" width="24" height="24">
-            <use xlink:href="#search"></use>
-          </svg></button>
-      </form>
-
-      <h5 class="cat-list-title">Browse Categories</h5>
-
-      <ul class="cat-list">
-
-        @foreach ($category as $cat )
-          <li class="cat-list-item">
-            <a href="#" title="{{ $cat->name }}">{{ $cat->name }}</a>
-          </li>
-        @endforeach
-      </ul>
-
-    </div>
-  </div>
-{{-- cart --}}
-  <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
-    <div class="offcanvas-header justify-content-center">
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div class="order-md-last">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Your cart</span>
-          <span class="badge bg-primary rounded-pill">3</span>
-        </h4>
-        <ul class="list-group mb-3">
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Growers cider</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$12</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Fresh grapes</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$8</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Heinz tomato ketchup</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span>Total (USD)</span>
-            <strong>$20</strong>
-          </li>
-        </ul>
-
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to Checkout</button>
-      </div>
-    </div>
-  </div>
-
-  {{-- NAVBAR --}}
-  <nav class="navbar navbar-expand-lg bg-light text-uppercase fs-6 p-3 border-bottom align-items-center ">
-    <div class="container-fluid">
-      <div class="row justify-content-between align-items-center w-100">
-
-        <div class="col-auto">
-          <a class="navbar-brand text-white" href="{{ route('web.home-page') }}">
-            <img src="{{ asset('/') }}assets/img/page/main-logo.png" class="img-fluid" style="width: 120px; height: 40px; object-fit: contain;" alt="logo ">
-          </a>
+ {{-- Search Popup (Penting agar tombol search fungsi) --}}
+    <div class="search-popup">
+        <div class="search-popup-container">
+            <form role="search" method="get" class="form-group" action="{{ route('web.all-produk') }}">
+                <input type="search" id="search-form" class="form-control border-0 border-bottom"
+                    placeholder="Type and press enter" value="{{ request('search') }}" name="search" />
+                <button type="submit" class="search-submit border-0 position-absolute bg-white" style="top: 15px;right: 15px;">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+            <h5 class="cat-list-title">Browse Categories</h5>
+            <ul class="cat-list">
+                @foreach ($category as $cat)
+                    <li class="cat-list-item">
+                        <a href="{{ route('web.all-produk', ['category' => $cat->id]) }}">{{ $cat->name }}</a>
+                    </li>
+                @endforeach
+            </ul>
         </div>
-
-        <div class="col-auto">
-          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-            </div>
-
-            <div class="offcanvas-body">
-              <ul class="navbar-nav justify-content-end flex-grow-1 gap-1 gap-md-5 pe-3">
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle active" href="#" id="dropdownHome" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Home</a>
-                  <ul class="dropdown-menu list-unstyled" aria-labelledby="dropdownHome">
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Home Layout 1</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Home Layout 2 </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Home Layout 3 </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Home Layout 4 </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="dropdownShop" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Shop</a>
-                  <ul class="dropdown-menu list-unstyled" aria-labelledby="dropdownShop">
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Sidebar </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Three Column </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Three Column Wide </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Four Column </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Four Column Wide </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Six Column </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Shop Six Column Wide </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Single Product </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Single Product V2 </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="dropdownBlog" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Blog</a>
-                  <ul class="dropdown-menu list-unstyled" aria-labelledby="dropdownBlog">
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Blog Classic </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Blog Grid with Sidebar </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Blog Grid Four Column </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Blog No Sidebar </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Blog Right Sidebar </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Single Post </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Single Post No Sidebar </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="dropdownPages" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Pages</a>
-                  <ul class="dropdown-menu list-unstyled" aria-labelledby="dropdownPages">
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">About </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Cart </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Checkout </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Coming Soon </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Contact </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Error Page </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">FAQs </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">My Account </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Order Tracking </a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item item-anchor">Wishlist </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Contact</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-3 col-lg-auto">
-          <ul class="list-unstyled d-flex m-0">
-            <li class="d-none d-lg-block">
-              <a href="index.html" class="text-uppercase mx-3">Wishlist <span class="wishlist-count">(0)</span>
-              </a>
-            </li>
-            <li class="d-none d-lg-block">
-              <a href="index.html" class="text-uppercase mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                aria-controls="offcanvasCart">Cart <span class="cart-count">(0)</span>
-              </a>
-            </li>
-            <li class="d-lg-none">
-              <a href="#" class="mx-2">
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                  <use xlink:href="#heart"></use>
-                </svg>
-              </a>
-            </li>
-            <li class="d-lg-none">
-              <a href="#" class="mx-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                aria-controls="offcanvasCart">
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                  <use xlink:href="#cart"></use>
-                </svg>
-              </a>
-            </li>
-            <li class="search-box" class="mx-2">
-              <a href="#search" class="search-button">
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                  <use xlink:href="#search"></use>
-                </svg>
-              </a>
-            </li>
-            @auth
-            <li class="nav-item dropdown">
-                <a href="nav-link dropdown-toggle href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <span>Halo, {{ Auth::user()->name }}</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                    <li>
-                    {{-- Form Logout (Wajib POST di Laravel) --}}
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="dropdown-item text-danger">Keluar</button>
-                    </form>
-                    </li>
-                </ul>
-            </li>
-            @endauth
-            {{-- kalau belum login --}}
-            @guest()
-                <li>
-                    <a href="{{ route('login') }}" class="nav-link">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <span class="ms-1">Login / Daftar</span>
-                </a>
-                </li>
-            @endguest
-          </ul>
-        </div>
-
-      </div>
-
     </div>
-  </nav>
+
+    {{-- NAVBAR UTAMA --}}
+    <nav class="navbar navbar-expand-lg bg-light text-uppercase fs-6 p-3 border-bottom align-items-center">
+        <div class="container-fluid">
+            <div class="row justify-content-between align-items-center w-100">
+                
+                {{-- Logo --}}
+                <div class="col-auto">
+                    <a class="navbar-brand" href="{{ route('web.home-page') }}">
+                        <img src="{{ asset('assets/img/page/main-logo.png') }}" class="img-fluid" style="width: 120px;" alt="logo">
+                    </a>
+                </div>
+
+                {{-- Menu Tengah --}}
+                <div class="col-auto d-none d-lg-block">
+                    <ul class="navbar-nav gap-5 pe-3">
+                        <li class="nav-item"><a class="nav-link" href="{{ route('web.home-page') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('web.all-produk') }}">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                {{-- Ikon Kanan --}}
+                <div class="col-auto">
+                    <ul class="list-unstyled d-flex m-0 align-items-center">
+                        {{-- Search Button --}}
+                        <li class="nav-item mx-2">
+                            <a href="#" class="search-button nav-link">
+                                <i class="fa fa-search fs-5"></i>
+                            </a>
+                        </li>
+
+                        {{-- Wishlist --}}
+                        <li class="nav-item mx-2">
+                            <a class="nav-link position-relative" href="{{ route('wishlist.index') }}">
+                                <i class="far fa-heart fs-5"></i>
+                                @auth
+                                    @php $wCount = \App\Models\Wishlist::where('user_id', Auth::id())->count(); @endphp
+                                    @if($wCount > 0)
+                                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.6rem;">{{ $wCount }}</span>
+                                    @endif
+                                @endauth
+                            </a>
+                        </li>
+
+                        {{-- Cart --}}
+                        <li class="nav-item mx-2">
+                            <a class="nav-link position-relative" href="{{ route('cart.index') }}">
+                                <i class="fas fa-shopping-cart fs-5"></i>
+                                @auth
+                                    @php $cCount = \App\Models\Cart::where('user_id', Auth::id())->sum('quantity'); @endphp
+                                    @if($cCount > 0)
+                                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.6rem;">{{ $cCount }}</span>
+                                    @endif
+                                @endauth
+                            </a>
+                        </li>
+
+                        {{-- Profil / Login --}}
+                        @auth
+                            <li class="nav-item dropdown ms-3">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown">
+                                    <i class="fa fa-user fs-5"></i> <span class="d-none d-md-inline ms-1">{{ Auth::user()->name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard Admin</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        @else
+                            <li class="nav-item ms-3">
+                                <a href="{{ route('login') }}" class="nav-link"><i class="fa fa-user fs-5"></i></a>
+                            </li>
+                        @endauth
+
+                        {{-- Mobile Menu Toggler --}}
+                        <li class="nav-item d-lg-none ms-3">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {{-- Offcanvas Menu (Mobile Only) --}}
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav gap-3">
+                <li class="nav-item"><a class="nav-link" href="{{ route('web.home-page') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('web.all-produk') }}">Shop</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+        </div>
+    </div>
 
  <div class="main-content">
     <!-- Begin Page Content -->

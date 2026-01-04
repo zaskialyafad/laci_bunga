@@ -1,11 +1,19 @@
 @extends('layout.template-page')
 @section('content')
+<div class="container mt-3">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+</div>
 
     {{-- Header --}}
     <section id="header" class="py-5 bg-light">
         <div class="container">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb justify-content-center">
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('web.home-page') }}">Home</a></li>
                 <li class="breadcrumb-item active">Products</li>
             </ol>
@@ -68,11 +76,30 @@
                                         <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="card-img-top product-image" style="height: 300px; object-fit: cover;">                                        
                                     @endif
                                 </a>
-                                <a href="#" class="btn-icon btn-wishlist position-absolute top-0 end-0 m-3">
-                                    <svg width="24" height="24" viewBox="0 0 24 24">
-                                        <use xlink:href="#heart"></use>
-                                    </svg>
-                                </a>
+                                <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
+                                    <form action="{{ route('wishlist.toggle') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        
+                                        {{-- Cek apakah produk ini sudah ada di wishlist user --}}
+                                        @php
+                                            $inWishlist = false;
+                                            if(auth()->check()) {
+                                                $inWishlist = \App\Models\Wishlist::where('user_id', auth()->id())
+                                                            ->where('product_id', $product->id)
+                                                            ->exists();
+                                            }
+                                        @endphp
+
+                                        <button type="submit" class="btn btn-light btn-sm shadow-sm rounded-circle" style="width: 40px; height: 40px;">
+                                            @if($inWishlist)
+                                                <i class="fas fa-heart text-danger"></i> {{-- Hati Merah (Solid) --}}
+                                            @else
+                                                <i class="far fa-heart"></i> {{-- Hati Kosong (Regular) --}}
+                                            @endif
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <span class="badge bg-info text-white mb-2">{{ $product->category->name }}</span>
