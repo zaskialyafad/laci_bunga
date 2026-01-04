@@ -7,7 +7,7 @@ use App\Models\Order;
 use App\Models\users;
 use App\Models\Cart;
 use Midtrans\Snap;
-use Midtrans\config;
+use Midtrans\Config;
 
 class CheckoutController extends Controller
 {
@@ -30,7 +30,7 @@ class CheckoutController extends Controller
 
         $params = [
             'transaction_details'=>[
-                'order_id' => $order->order_numer,
+                'order_id' => $order->order_number,
                 'gross_amount' => (int) $order->total_price,
             ],
             'customer_details'=>[
