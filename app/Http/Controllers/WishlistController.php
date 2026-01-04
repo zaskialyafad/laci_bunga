@@ -11,15 +11,6 @@ use Illuminate\View\View;
 
 class WishlistController extends Controller 
 {
-    /**
-     * Pastikan hanya user yang login yang bisa mengakses ini.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-
     public function index(): View
     {
         // Mengambil data wishlist milik user yang login beserta relasi produknya
