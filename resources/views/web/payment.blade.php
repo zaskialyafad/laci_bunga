@@ -8,12 +8,10 @@
     </div>
 </section>
 
-{{-- Pastikan ini dipanggil sebelum script custom kamu --}}
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
 
 <script type="text/javascript">
     document.getElementById('pay-button').onclick = function(){
-        // SnapToken harus berupa string yang dikirim dari Controller
         snap.pay('{{ $snapToken }}', {
             onSuccess: function(result){
                 window.location.href = '{{ route("web.home-page") }}'; 
