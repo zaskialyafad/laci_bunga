@@ -155,7 +155,7 @@
   </svg>
 
 
- {{-- Search Popup (Penting agar tombol search fungsi) --}}
+ {{-- Search Popup  --}}
     <div class="search-popup">
         <div class="search-popup-container">
             <form role="search" method="get" class="form-group" action="{{ route('web.all-produk') }}">

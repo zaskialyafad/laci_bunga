@@ -58,16 +58,16 @@
                                                 </a>
                                             </h6>
                                             <small class="text-muted">
-                                                Color: {{ $cart->productVariation->color }} | 
-                                                Size: {{ $cart->productVariation->size }}
+                                                Color: {{ $cart->product_variation->color }} | 
+                                                Size: {{ $cart->product_variation->size }}
                                             </small><br>
-                                            <small class="text-muted">SKU: {{ $cart->productVariation->sku }}</small>
+                                            <small class="text-muted">SKU: {{ $cart->product_variation->sku }}</small>
                                         </div>
 
                                         {{-- Price --}}
                                         <div class="col-md-2 col-6 mt-2 mt-md-0">
                                             <strong class="text-primary">
-                                                Rp {{ number_format($cart->productVariation->price, 0, ',', '.') }}
+                                                Rp {{ number_format($cart->product_variation->price, 0, ',', '.') }}
                                             </strong>
                                         </div>
 
@@ -83,16 +83,16 @@
                                                     <input type="number" class="form-control text-center" value="{{ $cart->quantity }}" readonly>
                                                     
                                                     {{-- Tombol Tambah --}}
-                                                    <button class="btn btn-outline-secondary" type="submit" name="action" value="increase" {{ $cart->quantity >= $cart->productVariation->stock ? 'disabled' : '' }}>+</button>
+                                                    <button class="btn btn-outline-secondary" type="submit" name="action" value="increase" {{ $cart->quantity >= $cart->product_variation->stock ? 'disabled' : '' }}>+</button>
                                                 </div>
                                             </form>
-                                            <small class="text-muted">Stock: {{ $cart->productVariation->stock }}</small>
+                                            <small class="text-muted">Stock: {{ $cart->product_variation->stock }}</small>
                                         </div>
 
                                         {{-- Subtotal & Remove --}}
                                         <div class="col-md-2 col-12 mt-2 mt-md-0 text-md-end">
                                             <div class="item-total mb-2">
-                                                <strong>Rp {{ number_format($cart->productVariation->price * $cart->quantity, 0, ',', '.') }}</strong>
+                                                <strong>Rp {{ number_format($cart->product_variation->price * $cart->quantity, 0, ',', '.') }}</strong>
                                             </div>
                                             
                                             <form action="{{ route('cart.remove', $cart->id) }}" method="POST">

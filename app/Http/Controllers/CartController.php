@@ -13,12 +13,12 @@ class CartController extends Controller
 
     public function index()
     {
-        $carts = Cart::with(['product.gambar_produk', 'productVariation'])
+        $carts = Cart::with(['product.gambar_produk', 'product_variation', 'product'])
             ->where('user_id', Auth::id())
             ->get();
         
         $subtotal = $carts->sum(function($cart) {
-            return $cart->productVariation->price * $cart->quantity;
+            return $cart->product_variation->price * $cart->quantity;
         });
         
         return view('web.cart', compact('carts', 'subtotal'));
@@ -68,7 +68,7 @@ return redirect()->back()->with('success', 'Produk berhasil ditambah ke keranjan
         $cart = Cart::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         
         if ($request->action == 'increase') {
-            if($cart->quantity < $cart->productVariation->stock) {
+            if($cart->quantity < $cart->product_variation->stock) {
                 $cart->increment('quantity');
             } else {
                 return redirect()->back()->with('error', 'Stok tidak mencukupi.');

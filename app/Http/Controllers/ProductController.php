@@ -289,5 +289,18 @@ class ProductController extends Controller
         $orders = Order::with(['user'])->latest()->get();        
         return view ('project.view-order', compact('orders'));
     }
+
+    public function deleteOrder($id)
+{
+    // Cari order
+    $order = \App\Models\Order::findOrFail($id);
+    
+    $order->items()->delete();
+    
+    // Hapus order
+    $order->delete();
+
+    return redirect()->back()->with('success', 'Data order berhasil dihapus');
+}
     
 }

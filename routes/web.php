@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/update/{product}', [ProductController::class, 'editProduct'])->name('update');
         Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('delete');
         Route::get('/view-order', [ProductController::class, 'order'])->name('view-order');
-
+        Route::delete('/admin/orders/{id}', [ProductController::class, 'deleteOrder'])->name('delete-order');
     });
     
 
@@ -57,6 +57,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     route::get('/success', function(){return"Pembayaran Berhasil!";});
-});
+    Route::get('/checkout/payment/{id}', [CheckoutController::class, 'payment'])->name('checkout.payment');
+    Route::get('/checkout/success/{id}', [CheckoutController::class, 'success'])->name('checkout.success');}
+);
 
 require __DIR__.'/auth.php';

@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\users;
 use App\Models\Cart;
-use App\Models\Product;
-use App\Models\product_variation;
+use App\Models\OrderItem;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -26,44 +25,87 @@ class CheckoutController extends Controller
         return redirect()->route('web.all-produk');
     }
 
-    return view('checkout.checkout', compact('cart', 'subtotal'));
+    return view('web.checkout', compact('cart', 'subTotal'));
     }
     
-    // proses pembayaran
+    // PROSES CHECKOUT (Simpan Data & Request Midtrans)
     public function process(Request $request){
-        // simpan data order dan alamat
-        $order = new Order();
-        $order->order_number = 'INV-' . uniqid();
-        $order->user_id = auth()->id();
-        $order->receiver_name = $request->receiver_name;
-        $order->phone = $request->phone;
-        $order->address = $request->address;
-        $order->total_price = $request->total_price;
-        $order->save();
+        DB::beginTransaction(); 
+        try {
+            // Buat Order
+            $order = Order::create([
+                'order_number' => 'INV-' . uniqid(),
+                'user_id' => auth()->id(),
+                'receiver_name' => $request->receiver_name,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'total_price' => $request->total_price,
+                'status' => 'pending',
+            ]);
+
+        $carts = Cart::with(['product', 'product_variation'])->where('user_id', auth()->id())->get();
         
-        // konfigurasi MIdtrans
-        Config::$serverKey = config('services.midtrans.serverKey');
-        Config::$isProduction = false;
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        foreach($carts as $cart) {
+            // pindahkan Keranjang ke Order Items
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cart->product_id,
+                    'product_variation_id' => $cart->product_variation_id,
+                    'quantity' => $cart->quantity,
+                    'price' => $cart->product_variation->price,
+                ]);
+                // Kurangi Stok Produk
+                $cart->product_variation->decrement('stock', $cart->quantity);
+        }
 
-        $params = [
-            'transaction_details'=>[
-                'order_id' => $order->order_number,
-                'gross_amount' => (int) $order->total_price,
-            ],
-            'customer_details'=>[
-                'first_namme'=> $order->receiver_name,
-                'phone' => $order->phone,
-            ],
-        ];
+            // konfigurasi MIdtrans
+            Config::$serverKey = config('services.midtrans.serverKey');
+            Config::$isProduction = false;
+            Config::$isSanitized = true;
+            Config::$is3ds = true;
 
-        // ambil snap token
-        $snapToken = Snap::getSnapToken($params);
-        $order->update(['snap_token' => $snapToken]);
+            $params = [
+                'transaction_details'=>[
+                    'order_id' => $order->order_number,
+                    'gross_amount' => (int) $order->total_price,
+                ],
+                'customer_details'=>[
+                    'first_namme'=> $order->receiver_name,
+                    'phone' => $order->phone,
+                ],
+            ];
 
-        Cart::where('user_id', auth()->id())->delete();
+            // ambil snap token
+            $snapToken = Snap::getSnapToken($params);
+            $order->update(['snap_token' => $snapToken]);
 
-        return view('web.payment', compact('order', 'snapToken'));
+            Cart::where('user_id', auth()->id())->delete();
+            DB::commit();
+            return redirect()->route('checkout.payment', $order->id);    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal checkout: ' . $e->getMessage());
+        }
     }
+
+    // HALAMAN PEMBAYARAN (Tampil Token & Cek Status)
+    public function payment($id)
+    {
+        $order = Order::with('items.product', 'items.product_variation')->where('user_id', auth()->id())->findOrFail($id);
+        return view('web.payment', compact('order'));
+    }
+
+    // JIKA SUKSES BAYAR (Update Status Jadi Paid)
+    public function success($id)
+    {
+        // 1. Cari order punya user yang login
+        $order = Order::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        
+        $order->update(['status' => 'paid']);
+        
+        // 3. Tampilkan halaman sukses
+        return view('web.success', compact('order'));
+    }
+    
+
 }
