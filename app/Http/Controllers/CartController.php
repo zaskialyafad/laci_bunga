@@ -60,8 +60,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambah ke keranjang.');
-    }
+return redirect()->back()->with('success', 'Produk berhasil ditambah ke keranjang.');    }
 
     // Update quantity
     public function update(Request $request, $id)

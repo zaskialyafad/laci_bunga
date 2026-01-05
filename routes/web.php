@@ -32,6 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
         Route::put('/update/{product}', [ProductController::class, 'editProduct'])->name('update');
         Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('delete');
+        Route::get('/view-order', [ProductController::class, 'order'])->name('view-order');
+
     });
     
 
@@ -52,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Checkout Routes
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     route::get('/success', function(){return"Pembayaran Berhasil!";});
 });

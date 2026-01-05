@@ -18,4 +18,9 @@ class Order extends Model
         'snap_token',
         'payment_status'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

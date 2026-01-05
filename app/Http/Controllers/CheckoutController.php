@@ -6,11 +6,30 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\users;
 use App\Models\Cart;
+use App\Models\Product;
+use App\Models\product_variation;
 use Midtrans\Snap;
 use Midtrans\Config;
 
 class CheckoutController extends Controller
 {
+    // menampilkan halaman checkout
+    public function index()
+    {
+        $cart = Cart::with(['product'])->where('user_id', auth()->id())->get();
+
+        $subTotal = $cart->sum(function($cart){
+            return $cart->product_variation->price * $cart->quantity;
+        });
+
+        if($cart->isEmpty()) {
+        return redirect()->route('web.all-produk');
+    }
+
+    return view('checkout.checkout', compact('cart', 'subtotal'));
+    }
+    
+    // proses pembayaran
     public function process(Request $request){
         // simpan data order dan alamat
         $order = new Order();
@@ -42,6 +61,8 @@ class CheckoutController extends Controller
         // ambil snap token
         $snapToken = Snap::getSnapToken($params);
         $order->update(['snap_token' => $snapToken]);
+
+        Cart::where('user_id', auth()->id())->delete();
 
         return view('web.payment', compact('order', 'snapToken'));
     }

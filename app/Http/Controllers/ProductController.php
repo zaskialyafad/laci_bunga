@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Product_variation;
 use App\Models\Gambar_produk;
+use App\Models\Order;
 
 //import return type View
 use Illuminate\Contracts\View\View;
@@ -27,7 +28,8 @@ class ProductController extends Controller
     {
         //ambil semua products
         $products = Product::with(['category', 'gambar_produk', 'product_variation'])->latest()->get();        
-        return view ( 'project.view-data', compact('products'));
+        return view ('project.view-data', compact('products'));
+
     }
 
     public function tambah()
@@ -188,7 +190,7 @@ class ProductController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('project.view-data')->with('success', 'Produk berhasil diperbarui!');
+        return redirect()->route('admin.view-data')->with('success', 'Produk berhasil diperbarui!');
     } catch (\Exception $e) {
         DB::rollBack();
         return redirect()->back()->withInput()->with('error', 'Gagal update: ' . $e->getMessage());
@@ -210,7 +212,7 @@ class ProductController extends Controller
 
             DB::commit();
             
-            return redirect()->route('project.view-data')->with('success', 'Produk berhasil dihapus!');
+            return redirect()->route('admin.view-data')->with('success', 'Produk berhasil dihapus!');
                 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -282,4 +284,10 @@ class ProductController extends Controller
 
         return view('web.detail-produk', compact('product', 'relatedProducts', 'colorGroups', 'sizes'));
     }
+    
+    public function order(){
+        $orders = Order::with(['user'])->latest()->get();        
+        return view ('project.view-order', compact('orders'));
+    }
+    
 }
