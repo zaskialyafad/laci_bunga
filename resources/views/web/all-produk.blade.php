@@ -71,9 +71,9 @@
                             <div class="image-holder position-relative">
                                 <a href="{{ route('web.detail-produk', $product->id) }}">
                                     @if ($product->gambar_produk->count()>0)
-                                        <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}" class="card-img-top product-image" style="height: 300px; object-fit: cover;">
+                                        <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}" class="card-img-top product-image" style="width: 100%; height: 300px; object-fit: cover; object-position: center;">
                                     @else
-                                        <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="card-img-top product-image" style="height: 300px; object-fit: cover;">                                        
+                                        <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="card-img-top product-image" style="width: 100%; height: 300px; object-fit: cover; object-position: center;">                                        
                                     @endif
                                 </a>
                                 <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">

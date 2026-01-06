@@ -28,7 +28,7 @@
                 <div class="image-holder">
                   <a href="{{route ('web.detail-produk', $product->id) }}">
                     @if($product->gambar_produk->count()> 0)
-                        <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="product" class="img-fluid">
+                        <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="product" style="width: 100%; height: 500px; object-fit: cover; object-position: center;">
                     @else
                         <img src="{{ asset('assets/img/no-image.png') }}" alt="">
                     @endif
@@ -185,7 +185,7 @@
               <div class="image-holder position-relative" >
                 <a href="{{ route('web.detail-produk', $product->id) }}">
                   @if ($product->gambar_produk->count()>0)
-                    <img style="width: 300px; height: 300px;" src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image img-fluid">
+                    <img style="width: 100%; height: 300px; object-fit: cover; object-position: center;" src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image">
                   @else
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
@@ -265,7 +265,7 @@
               <div class="image-holder position-relative">
                 <a href="{{ route('web.detail-produk', $product->id) }}">
                   @if ($product->gambar_produk->count()>0)
-                    <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image img-fluid">
+                    <img style="width: 100%; height: 300px; object-fit: cover; object-position: center;" src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image">
                   @else
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
@@ -392,7 +392,7 @@
               <div class="image-holder position-relative">
                 <a href="{{ route('web.detail-produk', $product->id) }}">
                   @if ($product->gambar_produk->count()>0)
-                    <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image img-fluid">
+                    <img style="width: 100%; height: 300px; object-fit: cover; object-position: center;" src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image">
                   @else
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
