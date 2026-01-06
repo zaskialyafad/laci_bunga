@@ -182,10 +182,10 @@
           @foreach ($newArrivals as $product )
           <div class="swiper-slide">
             <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
+              <div class="image-holder position-relative" >
                 <a href="{{ route('web.detail-produk', $product->id) }}">
                   @if ($product->gambar_produk->count()>0)
-                    <img src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image img-fluid">
+                    <img style="width: 300px; height: 300px;" src="{{asset('storage/productsImg/' . $product->gambar_produk->first()->image)}}" alt="{{ $product->product_name }}"  class="product-image img-fluid">
                   @else
                     <img src="{{ asset('assets/img/no-image.png') }}" alt="{{ $product->product_name }}" class="product-image img-fluid">
                   @endif
@@ -206,9 +206,9 @@
 
                         <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm" style="width: 35px; height: 35px; border: none;">
                             @if($isFavorit)
-                                <i class="fas fa-heart text-danger"></i> {{-- Hati Merah --}}
+                                <i class="fas fa-heart text-danger"></i>
                             @else
-                                <i class="far fa-heart"></i> {{-- Hati Kosong --}}
+                                <i class="far fa-heart"></i> 
                             @endif
                         </button>
                     </form>
