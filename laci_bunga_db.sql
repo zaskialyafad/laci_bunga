@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2026 at 12:15 PM
+-- Generation Time: Jan 06, 2026 at 09:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,9 +67,7 @@ CREATE TABLE `carts` (
 
 INSERT INTO `carts` (`id`, `user_id`, `product_id`, `product_variation_id`, `quantity`, `created_at`, `updated_at`) VALUES
 (1, 3, 6, 12, 1, '2026-01-03 21:04:09', '2026-01-03 21:08:42'),
-(2, 3, 11, 21, 1, '2026-01-03 21:04:59', '2026-01-03 21:04:59'),
-(3, 1, 6, 12, 1, '2026-01-04 01:16:01', '2026-01-04 01:16:01'),
-(5, 2, 27, 48, 1, '2026-01-04 03:52:21', '2026-01-04 03:52:21');
+(2, 3, 11, 21, 1, '2026-01-03 21:04:59', '2026-01-03 21:04:59');
 
 -- --------------------------------------------------------
 
@@ -217,7 +215,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2026_01_02_083859_drop_admins_table', 1),
 (11, '2026_01_03_232410_create_carts_table', 2),
 (12, '2026_01_03_232443_create_wishlists_table', 2),
-(13, '2026_01_04_060009_create_orders_table', 3);
+(13, '2026_01_04_060009_create_orders_table', 3),
+(14, '2026_01_05_194250_create_order_items_table', 4);
 
 -- --------------------------------------------------------
 
@@ -244,10 +243,6 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_number`, `user_id`, `receiver_name`, `phone`, `address`, `total_price`, `payment_status`, `snap_token`, `created_at`, `updated_at`) VALUES
-(1, 'INV-695a1cb3047fb', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', NULL, '2026-01-04 00:54:27', '2026-01-04 00:54:27'),
-(2, 'INV-695a1dc489ec2', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', NULL, '2026-01-04 00:59:00', '2026-01-04 00:59:00'),
-(3, 'INV-695a1e468d511', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', NULL, '2026-01-04 01:01:10', '2026-01-04 01:01:10'),
-(4, 'INV-695a1f0dc2d81', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', NULL, '2026-01-04 01:04:29', '2026-01-04 01:04:29'),
 (5, 'INV-695a1f5e5e2f2', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', NULL, '2026-01-04 01:05:50', '2026-01-04 01:05:50'),
 (6, 'INV-695a1f87dcddd', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', NULL, '2026-01-04 01:06:31', '2026-01-04 01:06:31'),
 (7, 'INV-695a21d90b4cd', 1, 'zaskia', '22222', 'adalah pokoknya', 385000.00, 'pending', NULL, '2026-01-04 01:16:25', '2026-01-04 01:16:25'),
@@ -273,9 +268,43 @@ INSERT INTO `orders` (`id`, `order_number`, `user_id`, `receiver_name`, `phone`,
 (27, 'INV-695a2f5476fdb', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', '1bd3ecca-1903-4300-bcf8-f3537c3826b2', '2026-01-04 02:13:56', '2026-01-04 02:13:58'),
 (28, 'INV-695a2f866f876', 3, 'zaskia', '081211841245', 'adalah pokoknya', 770000.00, 'pending', 'c73b95da-aa8c-45d7-9009-72a975731722', '2026-01-04 02:14:46', '2026-01-04 02:14:47'),
 (29, 'INV-695a3954c50f4', 3, 'zaskia', '4646', 'vsdvava', 770000.00, 'pending', 'ea212578-a080-4343-a657-9650ce24c6dd', '2026-01-04 02:56:36', '2026-01-04 02:56:38'),
-(30, 'INV-695a46a0ec4c7', 2, 'zaskia', '12345', 'dimana aja', 9000.00, 'pending', 'eb0f3d0e-5546-46b0-b66e-e521b3bfa411', '2026-01-04 03:53:20', '2026-01-04 03:53:25'),
 (31, 'INV-695a472234a50', 2, 'zaski', '081211841245', 'di rumah', 3000.00, 'pending', 'd6835d39-d767-4fa9-ad24-aa0831a47a4e', '2026-01-04 03:55:30', '2026-01-04 03:55:32'),
-(32, 'INV-695a47540a745', 2, 'zaski', '081211841245', 'di rumah', 3000.00, 'pending', '20cab7bf-d343-4ea2-b76b-37493952e254', '2026-01-04 03:56:20', '2026-01-04 03:56:21');
+(32, 'INV-695a47540a745', 2, 'zaski', '081211841245', 'di rumah', 3000.00, 'pending', '20cab7bf-d343-4ea2-b76b-37493952e254', '2026-01-04 03:56:20', '2026-01-04 03:56:21'),
+(33, 'INV-695bcb9b8e5ea', 3, 'zaskia', '081211841245', 'adaa', 770000.00, 'pending', 'TOKEN-PALSU-DEMO-1767623579', '2026-01-05 07:32:59', '2026-01-05 07:32:59'),
+(39, 'INV-695c22c4b1bd3', 1, 'xvf', '014444', 'bvbvncgbbcffg bxbxf', 385000.00, 'pending', '22367548-ef32-4e51-b1cb-6653c7b06d48', '2026-01-05 13:44:52', '2026-01-05 13:44:55'),
+(40, 'INV-695c2a1d62a76', 1, 'budi', '003545', 'zmb czjv lhvckJAV lAGk', 6000.00, 'pending', '998874fc-b4b2-4156-a48f-13fd9a0c35bf', '2026-01-05 14:16:13', '2026-01-05 14:16:15'),
+(41, 'INV-695c8d4436027', 2, 'cccdz', 'c cgh hf f', 'fghnsdrfh', 388000.00, 'pending', '739ad135-59ea-4fd6-b854-87364578d3ec', '2026-01-05 21:19:16', '2026-01-05 21:19:19'),
+(42, 'INV-695c959ac7b0f', 2, 'vbbcf', 'bxfbxbxf', 'bcgb', 100000.00, 'pending', 'd8b7960f-8e03-409a-89c3-1fac5b0d470e', '2026-01-05 21:54:50', '2026-01-05 21:54:56'),
+(43, 'INV-695c99c800f6a', 2, 'cobaa', '1444', 'cxvfbffbbdfhdrgfdrgf', 385000.00, 'pending', '9ead981c-f161-4cdf-99e0-78d6bac9ff3b', '2026-01-05 22:12:40', '2026-01-05 22:12:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `product_variation_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_variation_id`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
+(1, 39, 6, 12, 1, 385000, '2026-01-05 13:44:52', '2026-01-05 13:44:52'),
+(2, 40, 27, 48, 2, 3000, '2026-01-05 14:16:13', '2026-01-05 14:16:13'),
+(3, 41, 27, 48, 1, 3000, '2026-01-05 21:19:16', '2026-01-05 21:19:16'),
+(4, 41, 7, 14, 1, 385000, '2026-01-05 21:19:16', '2026-01-05 21:19:16'),
+(5, 42, 26, 47, 1, 100000, '2026-01-05 21:54:50', '2026-01-05 21:54:50'),
+(6, 43, 8, 16, 1, 385000, '2026-01-05 22:12:40', '2026-01-05 22:12:40');
 
 -- --------------------------------------------------------
 
@@ -288,6 +317,13 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('admin@gmail.com', '$2y$12$A5O1v2RtqeAaLXalvvX1MuRbq6uQYF18sc3aPF1K9OaP1FM2FPH4G', '2026-01-05 22:27:56');
 
 -- --------------------------------------------------------
 
@@ -358,11 +394,11 @@ CREATE TABLE `product_variations` (
 
 INSERT INTO `product_variations` (`id`, `product_id`, `size`, `color`, `price`, `stock`, `sku`, `created_at`, `updated_at`) VALUES
 (11, 6, 'S/M', 'Muted Sage', 385000, 15, 'LB-006-SG', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
-(12, 6, 'L/XL', 'Dusty Rose', 385000, 10, 'LB-006-DR', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
+(12, 6, 'L/XL', 'Dusty Rose', 385000, 9, 'LB-006-DR', '2026-01-02 11:28:02', '2026-01-05 13:44:52'),
 (13, 7, 'S/M', 'Muted Sage', 385000, 15, 'LB-007-SG', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
-(14, 7, 'L/XL', 'Dusty Rose', 385000, 10, 'LB-007-DR', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
+(14, 7, 'L/XL', 'Dusty Rose', 385000, 9, 'LB-007-DR', '2026-01-02 11:28:02', '2026-01-05 21:19:16'),
 (15, 8, 'S/M', 'Muted Sage', 385000, 15, 'LB-008-SG', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
-(16, 8, 'L/XL', 'Dusty Rose', 385000, 10, 'LB-008-DR', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
+(16, 8, 'L/XL', 'Dusty Rose', 385000, 9, 'LB-008-DR', '2026-01-02 11:28:02', '2026-01-05 22:12:40'),
 (17, 9, 'S/M', 'Muted Sage', 385000, 15, 'LB-009-SG', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
 (18, 9, 'L/XL', 'Dusty Rose', 385000, 10, 'LB-009-DR', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
 (19, 10, 'S/M', 'Muted Sage', 385000, 15, 'LB-010-SG', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
@@ -389,8 +425,8 @@ INSERT INTO `product_variations` (`id`, `product_id`, `size`, `color`, `price`, 
 (40, 20, 'All Size', 'Dusty Rose', 125000, 10, 'LB-020-DR', '2026-01-02 11:28:02', '2026-01-02 11:28:02'),
 (45, 2, 'S/M', 'Muted Sage', 385000, 15, 'LB-002-SG', '2026-01-02 12:17:34', '2026-01-02 12:17:34'),
 (46, 2, 'L/XL', 'Dusty Rose', 385000, 10, 'LB-002-DR', '2026-01-02 12:17:34', '2026-01-02 12:17:34'),
-(47, 26, NULL, NULL, 100000, 3, 'SKU-A2XQI5WD', '2026-01-03 07:49:11', '2026-01-03 07:49:11'),
-(48, 27, 'S', 'hijau', 3000, 10, 'SKU-BAJ-HIJAU-S', '2026-01-04 03:25:23', '2026-01-04 03:25:23'),
+(47, 26, NULL, NULL, 100000, 2, 'SKU-A2XQI5WD', '2026-01-03 07:49:11', '2026-01-05 21:54:50'),
+(48, 27, 'S', 'hijau', 3000, 7, 'SKU-BAJ-HIJAU-S', '2026-01-04 03:25:23', '2026-01-05 21:19:16'),
 (49, 27, 'M', 'hijau', 3000, 10, 'SKU-BAJ-HIJAU-M', '2026-01-04 03:25:23', '2026-01-04 03:25:23'),
 (50, 27, 'L', 'hijau', 3000, 10, 'SKU-BAJ-HIJAU-L', '2026-01-04 03:25:23', '2026-01-04 03:25:23'),
 (51, 27, 'XL', 'hijau', 3000, 10, 'SKU-BAJ-HIJAU-XL', '2026-01-04 03:25:23', '2026-01-04 03:25:23'),
@@ -419,9 +455,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('EMEarH2keqigcD3IQklu8bJx5ULH9yHGElyXCeMS', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiaktQazhXTm5NcHphcTN2dlhLbVl4WnU2V3l1S2ZqQ0pPeFgxWHRxRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jYXJ0IjtzOjU6InJvdXRlIjtzOjEwOiJjYXJ0LmluZGV4Ijt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1767524561),
-('Shwt1XBZ9e4WdJZExfvwV0aauwk8JOomM8FmV0FZ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMFM0QnpDMVltSE4xMDcyeU5xa0R0Smd2YjhMekJZSDJ5R3hvQmpyOCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hbGwtcHJvZHVrIjtzOjU6InJvdXRlIjtzOjE0OiJ3ZWIuYWxsLXByb2R1ayI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1767519339),
-('yDYw8Td1S5EiCKNqoQN0Bql6pK8RsIsJOI7yrDLf', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoic0xpRXJxaFNGYlNMemtkTUNyQVhqcUVNWUZyVTNjdU1aZ1ZmcXlTQiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi92aWV3LWRhdGEiO3M6NToicm91dGUiO3M6MTU6ImFkbWluLnZpZXctZGF0YSI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1767521589);
+('NXUtRtawAs7ZAYyVxyUlhMJu2sP1PDQnny4BFtAX', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQ3N1NHNnZFFzR2VlaUk2QWZ5blp4ZXh5NkFOYXZZYnJaUkZrcE5BQiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czoxMzoid2ViLmhvbWUtcGFnZSI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1767681189);
 
 -- --------------------------------------------------------
 
@@ -545,6 +579,15 @@ ALTER TABLE `orders`
   ADD KEY `orders_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_items_order_id_foreign` (`order_id`),
+  ADD KEY `order_items_product_id_foreign` (`product_id`),
+  ADD KEY `order_items_product_variation_id_foreign` (`product_variation_id`);
+
+--
 -- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
@@ -596,7 +639,7 @@ ALTER TABLE `wishlists`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -626,13 +669,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -681,6 +730,14 @@ ALTER TABLE `gambar_produks`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `order_items_product_variation_id_foreign` FOREIGN KEY (`product_variation_id`) REFERENCES `product_variations` (`id`);
 
 --
 -- Constraints for table `products`
