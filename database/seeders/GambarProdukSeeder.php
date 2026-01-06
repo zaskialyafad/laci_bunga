@@ -13,8 +13,6 @@ class GambarProdukSeeder extends Seeder
     public function run(): void
     {
         $data = [];
-
-        // Looping dari ID 6 sampai 25 sesuai data di database Anda
         for ($i = 6; $i <= 25; $i++) {
             
             // Logika untuk menentukan nama file gambar (1.png - 20.png)

@@ -57,20 +57,32 @@
                     <span class="badge bg-info text-white mb-2">{{ $product->category->name }}</span>
                     <h1 class="h2 mb-3">{{ $product->product_name }}</h1>
                     
-                    {{-- Price Range --}}
-                    @if($product->product_variation->count() > 0)
+                    {{-- Logic Variabel --}}
+                    @php
+                        $variations = $product->product_variation;
+                        $isSingle = $variations->count() === 1;
+                        $firstVar = $variations->first();
+                    @endphp
+
+                    {{-- Price Display --}}
+                    @if($variations->count() > 0)
                         @php
-                            $minPrice = $product->product_variation->min('price');
-                            $maxPrice = $product->product_variation->max('price');
+                            $minPrice = $variations->min('price');
+                            $maxPrice = $variations->max('price');
                         @endphp
                         <div class="price mb-4">
                             <h3 class="text-primary">
+                                {{-- Jika Produk Tunggal atau Harga Min=Max, tampilkan 1 harga saja --}}
                                 @if($minPrice == $maxPrice)
                                     Rp {{ number_format($minPrice, 0, ',', '.') }}
                                 @else
                                     Rp {{ number_format($minPrice, 0, ',', '.') }} - Rp {{ number_format($maxPrice, 0, ',', '.') }}
                                 @endif
                             </h3>
+                        </div>
+                    @else
+                        <div class="price mb-4">
+                            <h3 class="text-primary">Harga Hubungi Admin</h3>
                         </div>
                     @endif
 
@@ -80,37 +92,61 @@
                         <p>{{ $product->description }}</p>
                     </div>
 
-                    {{-- Variation Selection --}}
-                   {{-- Form Add to Cart Tradisional --}}
+                    {{-- Form Add to Cart --}}
                     <form action="{{ route('cart.add') }}" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                        {{-- Pemilihan Variasi Langsung --}}
+                        {{-- LOGIKA PEMILIHAN VARIASI --}}
                         <div class="mb-4">
-                            <h6 class="fw-bold">Select Color & Size:</h6>
-                            <select name="product_variation_id" class="form-select" required>
-                                <option value="">-- Choose Option --</option>
-                                @foreach($product->product_variation as $v)
-                                    <option value="{{ $v->id }}">
-                                        {{ $v->color }} | Size: {{ $v->size }} 
-                                        (Rp {{ number_format($v->price, 0, ',', '.') }}) 
-                                        - Stock: {{ $v->stock }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <small class="text-muted">Prices and stock are shown per selection.</small>
+                            
+                            {{-- KASUS 1: Produk Punya Banyak Variasi --}}
+                            @if(!$isSingle && $variations->count() > 0)
+                                <h6 class="fw-bold">Select Color & Size:</h6>
+                                <select name="product_variation_id" class="form-select" required>
+                                    <option value="">-- Choose Option --</option>
+                                    @foreach($variations as $v)
+                                        <option value="{{ $v->id }}">
+                                            {{ $v->color }} | Size: {{ $v->size }} 
+                                            (Rp {{ number_format($v->price, 0, ',', '.') }}) 
+                                            - Stock: {{ $v->stock }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="text-muted">Prices and stock are shown per selection.</small>
+                            
+                            {{-- KASUS 2: Produk Tunggal (Single) --}}
+                            @elseif($isSingle)
+                                {{-- Langsung pilih otomatis variasi satu-satunya --}}
+                                <input type="hidden" name="product_variation_id" value="{{ $firstVar->id }}">
+                                
+                                {{-- Tampilkan Info Stok saja --}}
+                                <div class="p-3 bg-light rounded border">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><strong>Stok Tersedia:</strong></span>
+                                        <span class="badge bg-success">{{ $firstVar->stock }} items</span>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">SKU: {{ $firstVar->sku }}</small>
+                                </div>
+
+                            {{-- KASUS 3: Error (Data Kosong) --}}
+                            @else
+                                <div class="alert alert-danger">Stok tidak tersedia (Data Error).</div>
+                            @endif
+
                         </div>
 
                         {{-- Quantity --}}
                         <div class="mb-4">
                             <h6>Quantity:</h6>
                             <input type="number" class="form-control text-center" name="quantity" 
-                                value="1" min="1" style="max-width: 100px;">
+                                value="1" min="1" max="{{ $isSingle ? $firstVar->stock : '' }}" 
+                                style="max-width: 100px;">
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">
+                            {{-- Disable tombol jika tidak ada variasi --}}
+                            <button type="submit" class="btn btn-primary btn-lg" {{ $variations->count() == 0 ? 'disabled' : '' }}>
                                 <i class="fas fa-shopping-cart"></i> Add to Cart
                             </button>
                         </div>
