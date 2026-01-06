@@ -241,8 +241,6 @@
                                     <i class="fa fa-user fs-5"></i> <span class="d-none d-md-inline ms-1">{{ Auth::user()->name }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard Admin</a></li>
-                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST" class="m-0">
                                             @csrf
