@@ -111,13 +111,13 @@
           <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
-                <a href="{{ route('web.all-produk') }}">
+                <a href="{{ route('web.all-produk', ['category' => 3]) }}">
                   <img src="{{ asset('/') }}assets/img/page/cat-item1.png" alt="categories" class="product-image img-fluid">
                 </a>
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="{{ route('web.all-produk') }}" class="btn btn-common text-uppercase">Top</a>
+                  <a href="{{ route('web.all-produk', ['category' => 3]) }}" class="btn btn-common text-uppercase">Top</a>
                 </div>
               </div>
             </div>
@@ -125,13 +125,13 @@
           <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
-                <a href="{{ route('web.all-produk') }}">
+                <a href="{{ route('web.all-produk', ['category' => 4]) }}">
                   <img src="{{ asset('/') }}assets/img/page/cat-item2.png" alt="categories" class="product-image img-fluid">
                 </a>
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="{{ route('web.all-produk') }}" class="btn btn-common text-uppercase">Bottom</a>
+                  <a href="{{ route('web.all-produk', ['category' => 4]) }}" class="btn btn-common text-uppercase">Bottom</a>
                 </div>
               </div>
             </div>
@@ -139,13 +139,13 @@
           <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
-                <a href="index.html">
+                <a href="{{ route('web.all-produk', ['category' => 1]) }}">
                   <img src="{{ asset('/') }}assets/img/page/cat-item3.png" alt="categories" class="product-image img-fluid">
                 </a>
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="{{ route('web.all-produk') }}" class="btn btn-common text-uppercase">Dress</a>
+                  <a href="{{ route('web.all-produk', ['category' => 1]) }}" class="btn btn-common text-uppercase">Dress</a>
                 </div>
               </div>
             </div>
@@ -153,13 +153,13 @@
           <div class="col-md-3">
             <div class="cat-item image-zoom-effect">
               <div class="image-holder">
-                <a href="{{ route('web.all-produk') }}">
+                <a href="{{ route('web.all-produk', ['category' => 5]) }}">
                   <img src="{{ asset('/') }}assets/img/page/cat-item4.png" alt="categories" class="product-image img-fluid">
                 </a>
               </div>
               <div class="category-content">
                 <div class="product-button">
-                  <a href="{{ route('web.all-produk') }}" class="btn btn-common text-uppercase">Accessories</a>
+                  <a href="{{ route('web.all-produk', ['category' => 5]) }}" class="btn btn-common text-uppercase">Accessories</a>
                 </div>
               </div>
             </div>

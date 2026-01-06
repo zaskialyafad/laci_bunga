@@ -15,7 +15,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('web.home-page') }}">Home</a></li>
-                <li class="breadcrumb-item active">Products</li>
+                <li class="breadcrumb-item active">Shop</li>
             </ol>
         </nav>
         <h3 class="text-center">All Products</h3>

@@ -1,130 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.template-page')
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+@section('content')
 
-    <title>{{ config('app.name', 'Laravel') }} - Register</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    
-    <!-- SB Admin 2 CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
-
-<body class="bg-gradient-primary">
-
+{{-- Section Background Abu-abu --}}
+<section class="d-flex align-items-center min-vh-100 py-5" style="background-color: #f8f9fa;">
     <div class="container">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                            </div>
-
-                            <form method="POST" action="{{ route('register') }}" class="user">
-                                @csrf
-
-                                <!-- Name -->
-                                <div class="form-group">
-                                    <input type="text" 
-                                           class="form-control form-control-user @error('name') is-invalid @enderror" 
-                                           id="name" 
-                                           name="name" 
-                                           value="{{ old('name') }}" 
-                                           required 
-                                           autofocus 
-                                           autocomplete="name"
-                                           placeholder="Full Name">
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <!-- Email Address -->
-                                <div class="form-group">
-                                    <input type="email" 
-                                           class="form-control form-control-user @error('email') is-invalid @enderror" 
-                                           id="email" 
-                                           name="email" 
-                                           value="{{ old('email') }}" 
-                                           required 
-                                           autocomplete="username"
-                                           placeholder="Email Address">
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <!-- Password -->
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" 
-                                               class="form-control form-control-user @error('password') is-invalid @enderror" 
-                                               id="password" 
-                                               name="password" 
-                                               required 
-                                               autocomplete="new-password"
-                                               placeholder="Password">
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Confirm Password -->
-                                    <div class="col-sm-6">
-                                        <input type="password" 
-                                               class="form-control form-control-user" 
-                                               id="password_confirmation" 
-                                               name="password_confirmation" 
-                                               required 
-                                               autocomplete="new-password"
-                                               placeholder="Repeat Password">
-                                    </div>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary btn-user btn-block">
-                                    Register Account
-                                </button>
-                            </form>
-
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="{{ route('password.request') }}">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="{{ route('login') }}">Already have an account? Login!</a>
-                            </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5"> 
+                
+                <div class="card border-0 shadow-lg rounded-3">
+                    <div class="card-body p-5">
+                        
+                        {{-- Header Register --}}
+                        <div class="text-center mb-4">
+                            <h1 class="h3 text-gray-900 fw-bold mb-2">Buat Akun Baru!</h1>
+                            <p class="text-muted small">Daftar sekarang untuk mulai berbelanja</p>
                         </div>
+
+                        <form method="POST" action="{{ route('register') }}" class="user">
+                            @csrf
+
+                            {{-- Name Input --}}
+                            <div class="mb-3">
+                                <label for="name" class="form-label small fw-bold text-muted">Nama Lengkap</label>
+                                <input type="text" 
+                                       class="form-control form-control-lg @error('name') is-invalid @enderror" 
+                                       id="name" 
+                                       name="name" 
+                                       value="{{ old('name') }}" 
+                                       required autofocus autocomplete="name"
+                                       placeholder="Masukan Nama Lengkap...">
+                                
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Email Input --}}
+                            <div class="mb-3">
+                                <label for="email" class="form-label small fw-bold text-muted">Alamat Email</label>
+                                <input type="email" 
+                                       class="form-control form-control-lg @error('email') is-invalid @enderror" 
+                                       id="email" 
+                                       name="email" 
+                                       value="{{ old('email') }}" 
+                                       required autocomplete="username"
+                                       placeholder="Masukan Alamat Email...">
+                                
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Row Password (Side by Side) --}}
+                            <div class="row">
+                                <div class="col-sm-6 mb-3">
+                                    <label for="password" class="form-label small fw-bold text-muted">Password</label>
+                                    <input type="password" 
+                                           class="form-control form-control-lg @error('password') is-invalid @enderror" 
+                                           id="password" 
+                                           name="password" 
+                                           required autocomplete="new-password"
+                                           placeholder="Password">
+                                    
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-sm-6 mb-3">
+                                    <label for="password_confirmation" class="form-label small fw-bold text-muted">Ulangi Password</label>
+                                    <input type="password" 
+                                           class="form-control form-control-lg" 
+                                           id="password_confirmation" 
+                                           name="password_confirmation" 
+                                           required autocomplete="new-password"
+                                           placeholder="Ulangi Password">
+                                </div>
+                            </div>
+
+                            {{-- Tombol Register --}}
+                            <div class="d-grid gap-2 mt-2">
+                                <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">
+                                    Daftar Sekarang
+                                </button>
+                            </div>
+
+                        </form>
+
+                        <hr class="my-4">
+
+                        {{-- Links --}}
+                        <div class="text-center mb-2">
+                            @if (Route::has('password.request'))
+                                <a class="small text-decoration-none" href="{{ route('password.request') }}">Lupa Password?</a>
+                            @endif
+                        </div>
+                        
+                        <div class="text-center">
+                            <span class="small text-muted">Sudah punya akun?</span>
+                            <a class="small text-decoration-none fw-bold" href="{{ route('login') }}">Login disini!</a>
+                        </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+</section>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-
-</body>
-</html>
+@endsection

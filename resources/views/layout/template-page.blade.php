@@ -177,8 +177,7 @@
     </div>
 
     {{-- NAVBAR UTAMA --}}
-    <nav class="navbar navbar-expand-lg bg-light text-uppercase fs-6 p-3 border-bottom align-items-center fixed-top">
-        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg bg-light text-uppercase fs-6 p-3 border-bottom align-items-center fixed-top" style="background-color: #f8f9fa !important;">        <div class="container-fluid">
             <div class="row justify-content-between align-items-center w-100">
                 
                 {{-- Logo --}}
