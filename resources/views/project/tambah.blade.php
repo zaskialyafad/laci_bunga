@@ -6,22 +6,12 @@
             <h6 class="m-0 font-weight-bold text-primary">Tambah Data Produk</h6>
         </div>
         <div class="card-body">
-            {{-- Penampil Pesan Error --}}
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <form action="{{ route('admin.simpanProduk') }}" method="POST" enctype="multipart/form-data" id="formTambahProduk">
                 @csrf
                 <input type="hidden" id="productId" value="">
                 
-                {{-- Informasi Produk --}}
+                {{-- BAGIAN 1: Informasi Dasar --}}
                 <div class="mb-4 pb-4 border-bottom">
                     <h5 class="mb-3">Informasi Product</h5>
                     
@@ -52,14 +42,13 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status Produk<span class="text-danger">*</span></label>
                         <select name="status" id="status" class="form-select" required>
-                            <option value="show" selected>Tampilkan</option>
-                            <option value="archive">Arsipkan</option>
+                            <option value="show" {{ old('status', $product->status) == 'show' ? 'selected' : '' }}>Tampilkan</option>
+                            <option value="archive" {{ old('status', $product->status) == 'archive' ? 'selected' : '' }}>Arsipkan</option>
                         </select>
-                        <small class="text-muted">"Arsipkan" akan menyimpan produk tapi tidak ditampilkan</small>
                     </div>
                 </div>
 
-                {{-- Gambar produk --}}
+                {{-- BAGIAN 2: Gambar Produk --}}
                 <div class="mb-4 pb-4 border-bottom">
                     <h5 class="mb-3">Gambar Produk</h5>
                     <div class="mb-3">
@@ -69,72 +58,95 @@
                     </div>
                 </div>
 
-                {{-- Section Variasi --}}
-                <div class="mb-4 pb-4 border-bottom">
-                    <h5 class="mb-3">Variasi Produk</h5>
+                {{-- BAGIAN 3: Variasi & Harga --}}
+                <div class="mb-4">
+                    <h5 class="mb-3">Harga & Stok</h5>
 
-                    {{-- Input Tunggal (Default) --}}
-                    <div id="singleProductInputs">
+                    {{-- A. MODE SINGLE PRODUCT (Default) --}}
+                    <div id="single-section" class="card card-body bg-light mb-3">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="price">Harga Produk*</label>
-                                <input type="number" class="form-control" id="price" name="price" value="{{ old('price') }}" required>
+                                <label for="singlePrice">Harga Satuan (Rp)*</label>
+                                <input type="number" name="price" id="singlePrice" class="form-control single-input" value="{{ old('price') }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="stock">Stok Produk*</label>
-                                <input type="number" class="form-control" id="stock" name="stock" value="{{ old('stock') }}" required>
+                                <label for="singleStock">Stok Total*</label>
+                                <input type="number" name="stock" id="singleStock" class="form-control single-input" value="{{ old('stock') }}" required>
                             </div>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <span class="text-muted small">Produk ini memiliki variasi warna/ukuran?</span><br>
+                            <button type="button" class="btn btn-sm btn-primary mt-1" onclick="aktifkanModeVariasi()">
+                                <i class="fas fa-list"></i> Aktifkan Variasi Produk
+                            </button>
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-outline-primary mt-2" id="btnTambahVariasi" onclick="tampilkanVariasiBaru()">
-                        + Tambah Variasi Produk
-                    </button>
+                    {{-- B. MODE VARIASI --}}
+                    <div id="variation-section" style="display: none;">
 
-                    {{-- Container Variasi Baru --}}
-                    <div id="variasiBaruSection" style="display: none;" class="mt-3">
-                        <div class="card bg-light p-3 shadow-sm">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6><i class="fas fa-cogs"></i> Pengaturan Variasi Baru</h6>
-                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="batalTambahVariasi()">
-                                    <i class="fas fa-times"></i> Batal
-                                </button>
-                            </div>
-
-                            <div id="variasiContainer"></div>
-
-                            <button type="button" class="btn btn-sm btn-secondary mb-3" onclick="tambahGrupVariasi()">
-                                + Tambah Grup Variasi
-                            </button>
-
-                            <div id="tabelVariasiBaru" style="display: none;">
-                                <div class="alert alert-primary mb-3">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label class="small">Harga Massal:</label>
-                                            <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control" id="hargaMassal" placeholder="0">
-                                                <button type="button" class="btn btn-primary" onclick="terapkanHargaMassal()">Set</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="small">Stok Massal:</label>
-                                            <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control" id="stokMassal" placeholder="0">
-                                                <button type="button" class="btn btn-primary" onclick="terapkanStokMassal()">Set</button>
-                                            </div>
-                                        </div>
+                        <div class="card bg-light mb-3 border-primary">
+                            <div class="card-body py-3">
+                                <h6 class="text-primary font-weight-bold"><i class="fas fa-plus-circle"></i> Tambah Variasi</h6>
+                                <p class="small text-muted mb-2">Pisahkan dengan koma. Contoh: <b>Merah, Biru</b></p>
+                                
+                                <div class="row align-items-end">
+                                    <div class="col-md-4 mb-2">
+                                        <label class="small font-weight-bold">Warna</label>
+                                        <input type="text" id="inputWarna" class="form-control" placeholder="Contoh: Merah, Hitam">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <label class="small font-weight-bold">Ukuran</label>
+                                        <input type="text" id="inputUkuran" class="form-control" placeholder="Contoh: S, M, L">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="button" class="btn btn-primary w-100" onclick="generateKeTabel()">
+                                            <i class="fas fa-arrow-down"></i> Tambahkan
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-sm bg-white">
-                                        <thead class="table-light">
-                                            <tr><th>Warna</th><th>Ukuran</th><th>Harga</th><th>Stok</th><th>SKU</th></tr>
-                                        </thead>
-                                        <tbody id="tabelVariasiBody"></tbody>
-                                    </table>
+                            </div>
+                        </div>
+
+                        {{-- Fitur Harga Massal --}}
+                        <div class="card card-body bg-white border mb-3 p-2">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-auto"><small class="fw-bold">Set Massal:</small></div>
+                                <div class="col-md-3">
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" class="form-control" id="massalHarga" placeholder="Harga Semua">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="terapkanMassal('price')">Set</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" class="form-control" id="massalStok" placeholder="Stok Semua">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="terapkanMassal('stock')">Set</button>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {{-- Tabel Variasi --}}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="20%">Warna</th>
+                                        <th width="15%">Ukuran</th>
+                                        <th width="25%">Harga (Rp)</th>
+                                        <th width="15%">Stok</th>
+                                        <th width="20%">SKU (Auto)</th>
+                                        <th width="5%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyVariasi">
+                                    {{-- Baris akan digenerate di JS --}}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="alert alert-warning small mt-2">
+                            <i class="fas fa-info-circle"></i> Hapus semua baris untuk kembali ke mode "Single Product".
                         </div>
                     </div>
                 </div>
@@ -151,144 +163,134 @@
 </div>
 
 <script>
-let jumlahGrup = 0;
-let dataVariasi = {};
-
+// Logic Counter Karakter
 document.addEventListener('DOMContentLoaded', function() {
     const deskripsi = document.getElementById('deskripsi');
     const nama = document.getElementById('namaProduk');
-    
     if(deskripsi) deskripsi.addEventListener('input', () => document.getElementById('sisaKarakter').textContent = deskripsi.value.length);
     if(nama) nama.addEventListener('input', () => document.getElementById('sisaKarakterNama').textContent = nama.value.length);
 });
 
-function tampilkanVariasiBaru() {
-    document.getElementById('variasiBaruSection').style.display = 'block';
-    document.getElementById('btnTambahVariasi').style.display = 'none';
-    document.getElementById('singleProductInputs').style.display = 'none';
+// Counter Index Variasi
+let currentIndex = 0;
+
+// Fungsi: Aktifkan Mode Variasi
+function aktifkanModeVariasi() {
+    document.getElementById('single-section').style.display = 'none';
+    document.getElementById('variation-section').style.display = 'block';
     
-    // Disable input utama
-    const p = document.getElementById('price'), s = document.getElementById('stock');
-    p.disabled = true; p.removeAttribute('required');
-    s.disabled = true; s.removeAttribute('required');
+    // Disable input single agar tidak terkirim dan tidak kena validasi
+    document.querySelectorAll('.single-input').forEach(el => {
+        el.disabled = true;
+        el.removeAttribute('required');
+    });
 
-    if(Object.keys(dataVariasi).length === 0) tambahGrupVariasi();
+    document.getElementById('inputWarna').focus();
 }
 
-function batalTambahVariasi() {
-    if(!confirm('Batalkan penggunaan variasi?')) return;
-    dataVariasi = {};
-    document.getElementById('variasiBaruSection').style.display = 'none';
-    document.getElementById('variasiContainer').innerHTML = '';
-    document.getElementById('btnTambahVariasi').style.display = 'block';
-    document.getElementById('singleProductInputs').style.display = 'block';
-    
-    const p = document.getElementById('price'), s = document.getElementById('stock');
-    p.disabled = false; p.setAttribute('required', 'required');
-    s.disabled = false; s.setAttribute('required', 'required');
+// Fungsi: Kembali ke Mode Single
+function kembaliKeSingle() {
+    document.getElementById('single-section').style.display = 'block';
+    document.getElementById('variation-section').style.display = 'none';
+
+    // Enable input single
+    document.querySelectorAll('.single-input').forEach(el => {
+        el.disabled = false;
+        el.setAttribute('required', 'required');
+    });
 }
 
-function tambahGrupVariasi() {
-    jumlahGrup++;
-    const id = `grup_${jumlahGrup}`;
-    dataVariasi[id] = { colors: [], sizes: [] };
-    
-    const div = document.createElement('div');
-    div.className = 'border p-3 mb-3 bg-white rounded shadow-sm';
-    div.id = id;
-    div.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <strong>Grup Variasi ${jumlahGrup}</strong>
-            <button type="button" class="btn btn-sm btn-danger" onclick="hapusGrup('${id}')"><i class="fas fa-trash"></i></button>
-        </div>
-        <div class="row">
-            <div class="col-md-6 border-right">
-                <label class="small fw-bold">Pilihan Warna:</label>
-                <div id="${id}_c"></div>
-                <button type="button" class="btn btn-sm btn-link p-0" onclick="tambahOpsi('${id}','colors')">+ Tambah Warna</button>
-            </div>
-            <div class="col-md-6">
-                <label class="small fw-bold">Pilihan Ukuran:</label>
-                <div id="${id}_s"></div>
-                <button type="button" class="btn btn-sm btn-link p-0" onclick="tambahOpsi('${id}','sizes')">+ Tambah Ukuran</button>
-            </div>
-        </div>
-    `;
-    document.getElementById('variasiContainer').appendChild(div);
-    tambahOpsi(id, 'colors'); 
-    tambahOpsi(id, 'sizes');
-}
+// Fungsi: Generate Tabel
+function generateKeTabel() {
+    const rawWarna = document.getElementById('inputWarna').value;
+    const rawUkuran = document.getElementById('inputUkuran').value;
 
-function tambahOpsi(gId, type) {
-    const ts = Date.now(), oId = `${gId}_${ts}`;
-    const container = document.getElementById(type === 'colors' ? `${gId}_c` : `${gId}_s`);
-    
-    const div = document.createElement('div');
-    div.className = 'input-group input-group-sm mb-1';
-    div.id = oId;
-    div.innerHTML = `
-        <input type="text" class="form-control" placeholder="..." onchange="updateOpsi('${gId}','${type}','${oId}',this.value)" required>
-        <button type="button" class="btn btn-danger" onclick="hapusOpsi('${gId}','${type}','${oId}')">x</button>
-    `;
-    container.appendChild(div);
-    dataVariasi[gId][type].push({id: oId, val: ''});
-}
+    const warnas = rawWarna ? rawWarna.split(',').map(s => s.trim()).filter(s => s !== '') : [];
+    const ukurans = rawUkuran ? rawUkuran.split(',').map(s => s.trim()).filter(s => s !== '') : [];
 
-function updateOpsi(gId, type, oId, val) {
-    const obj = dataVariasi[gId][type].find(o => o.id === oId);
-    if(obj) { obj.val = val.trim(); renderTabel(); }
-}
+    if (warnas.length === 0 && ukurans.length === 0) {
+        alert('Mohon isi minimal Warna atau Ukuran!');
+        return;
+    }
 
-function hapusOpsi(gId, type, oId) {
-    if (dataVariasi[gId][type].length <= 1) return alert('Minimal 1 opsi!');
-    document.getElementById(oId).remove();
-    dataVariasi[gId][type] = dataVariasi[gId][type].filter(o => o.id !== oId);
-    renderTabel();
-}
+    const finalWarna = warnas.length > 0 ? warnas : ['-'];
+    const finalUkuran = ukurans.length > 0 ? ukurans : ['-'];
 
-function hapusGrup(gId) {
-    if(!confirm('Hapus grup ini?')) return;
-    document.getElementById(gId).remove();
-    delete dataVariasi[gId];
-    renderTabel();
-}
+    // Ambil nama produk untuk generate SKU
+    let prodName = document.getElementById('namaProduk').value || 'PROD';
+    // Ambil 3 huruf pertama, uppercase, buang spasi/karakter aneh
+    prodName = prodName.replace(/[^a-zA-Z0-9]/g, '').substring(0,3).toUpperCase();
 
-function renderTabel() {
-    const validGrup = Object.values(dataVariasi).filter(g => g.colors.some(c => c.val) && g.sizes.some(s => s.val));
-    const tabSection = document.getElementById('tabelVariasiBaru');
-    
-    if(validGrup.length === 0) { tabSection.style.display = 'none'; return; }
-    tabSection.style.display = 'block';
-
-    let html = '', idx = 0;
-    const prodName = (document.getElementById('namaProduk').value || 'PROD').substring(0,3).toUpperCase();
-
-    validGrup.forEach(g => {
-        g.colors.filter(c => c.val).forEach(c => {
-            g.sizes.filter(s => s.val).forEach(s => {
-                const sku = `SKU-${prodName}-${c.val}-${s.val}`.toUpperCase().replace(/\s+/g, '-');
-                html += `<tr>
-                    <td>${c.val}<input type="hidden" name="variations[${idx}][color]" value="${c.val}"></td>
-                    <td>${s.val}<input type="hidden" name="variations[${idx}][size]" value="${s.val}"></td>
-                    <td><input type="number" name="variations[${idx}][price]" class="form-control form-control-sm input-harga" required></td>
-                    <td><input type="number" name="variations[${idx}][stock]" class="form-control form-control-sm input-stok" required></td>
-                    <td><input type="text" name="variations[${idx}][sku]" class="form-control form-control-sm" value="${sku}" readonly></td>
-                </tr>`;
-                idx++;
-            });
+    finalWarna.forEach(w => {
+        finalUkuran.forEach(u => {
+            tambahBaris(w, u, prodName);
         });
     });
-    document.getElementById('tabelVariasiBody').innerHTML = html;
+
+    // Reset Input
+    document.getElementById('inputWarna').value = '';
+    document.getElementById('inputUkuran').value = '';
+    
+    cekKondisiTabel();
 }
 
-function terapkanHargaMassal() {
-    const v = document.getElementById('hargaMassal').value;
-    if(v) document.querySelectorAll('.input-harga').forEach(i => i.value = v);
+// Fungsi: Tambah HTML ke Tabel
+function tambahBaris(warna, ukuran, prodCode) {
+    const valWarna = warna === '-' ? '' : warna;
+    const valUkuran = ukuran === '-' ? '' : ukuran;
+    
+    // Generate SKU Otomatis: SKU-XXX-WARNA-SIZE
+    const skuCode = `SKU-${prodCode}-${valWarna.substring(0,3)}-${valUkuran}`.toUpperCase().replace(/\s+/g, '');
+
+    const tbody = document.getElementById('bodyVariasi');
+    const tr = document.createElement('tr');
+    
+    tr.innerHTML = `
+        <td><input type="text" name="variations[${currentIndex}][color]" class="form-control var-input" value="${valWarna}" required></td>
+        <td><input type="text" name="variations[${currentIndex}][size]" class="form-control var-input" value="${valUkuran}" required></td>
+        <td><input type="number" name="variations[${currentIndex}][price]" class="form-control var-input input-harga-massal" placeholder="0" required></td>
+        <td><input type="number" name="variations[${currentIndex}][stock]" class="form-control var-input input-stok-massal" placeholder="0" required></td>
+        
+        {{-- Input SKU Otomatis --}}
+        <td><input type="text" name="variations[${currentIndex}][sku]" class="form-control var-input bg-light" value="${skuCode}" readonly></td>
+        
+        <td class="text-center">
+             <button type="button" class="btn btn-danger btn-sm" onclick="hapusBaris(this)"><i class="fas fa-trash"></i></button>
+        </td>
+    `;
+    
+    tbody.appendChild(tr);
+    currentIndex++; 
 }
 
-function terapkanStokMassal() {
-    const v = document.getElementById('stokMassal').value;
-    if(v) document.querySelectorAll('.input-stok').forEach(i => i.value = v);
+// Fungsi: Hapus Baris
+function hapusBaris(btn) {
+    const row = btn.closest('tr');
+    row.remove();
+    cekKondisiTabel();
+}
+
+// Fungsi: Cek apakah tabel kosong
+function cekKondisiTabel() {
+    const tbody = document.getElementById('bodyVariasi');
+    if (tbody.children.length === 0) {
+        kembaliKeSingle();
+    } else {
+        if(document.getElementById('variation-section').style.display === 'none') {
+            aktifkanModeVariasi();
+        }
+    }
+}
+
+// Fungsi: Set Harga/Stok Massal
+function terapkanMassal(type) {
+    if(type === 'price') {
+        const val = document.getElementById('massalHarga').value;
+        if(val) document.querySelectorAll('.input-harga-massal').forEach(el => el.value = val);
+    } else {
+        const val = document.getElementById('massalStok').value;
+        if(val) document.querySelectorAll('.input-stok-massal').forEach(el => el.value = val);
+    }
 }
 </script>
 @endsection

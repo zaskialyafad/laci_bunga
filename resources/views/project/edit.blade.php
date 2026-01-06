@@ -50,7 +50,7 @@
           </div>
         </div>
 
-        {{-- BAGIAN 2: GAMBAR PRODUK (SUDAH DIKEMBALIKAN) --}}
+        {{-- BAGIAN 2: GAMBAR PRODUK --}}
         <div class="mb-4 pb-4 border-bottom">
           <h5 class="mb-3">Gambar Produk</h5>
           @if($product->gambar_produk->count() > 0)
@@ -109,7 +109,6 @@
           {{-- B. INPUT VARIATION MODE --}}
           <div id="variation-section" style="{{ !$hasVariations ? 'display:none' : '' }}">
             
-            {{-- Form Generator --}}
             <div class="card bg-light mb-3 border-primary">
               <div class="card-body py-3">
                 <h6 class="text-primary font-weight-bold"><i class="fas fa-plus-circle"></i> Tambah Variasi Baru</h6>
@@ -146,7 +145,7 @@
                   </tr>
                 </thead>
                 <tbody id="bodyVariasi">
-                  {{-- Render Variasi Lama dari Database --}}
+                  {{-- Variasi Lama dari Database --}}
                   @if($hasVariations)
                     @foreach($product->product_variation as $idx => $v)
                       <tr>
@@ -249,7 +248,7 @@ function generateKeTabel() {
 
     finalWarna.forEach(w => {
         finalUkuran.forEach(u => {
-            tambahBarisHTML(w, u);
+            tambahBaris(w, u);
         });
     });
 
@@ -261,7 +260,7 @@ function generateKeTabel() {
 }
 
 // Tambah baris ke HTML (Append)
-function tambahBarisHTML(warna, ukuran) {
+function tambahBaris(warna, ukuran) {
     const valWarna = warna === '-' ? '' : warna;
     const valUkuran = ukuran === '-' ? '' : ukuran;
     
