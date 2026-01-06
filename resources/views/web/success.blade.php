@@ -34,7 +34,7 @@
 
                 {{-- Tombol Aksi --}}
                 <div class="d-grid gap-2">
-                    <a href="{{ route('web.home-page') }}" class="btn btn-primary btn-lg shadow-sm">
+                    <a href="{{ route('web.all-produk') }}" class="btn btn-primary btn-lg shadow-sm">
                         <i class="fas fa-shopping-bag me-2"></i> Belanja Lagi
                     </a>
                      

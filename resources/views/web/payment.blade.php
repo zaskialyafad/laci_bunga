@@ -48,20 +48,19 @@
 <script type="text/javascript">
     document.getElementById('pay-button').onclick = function(){
         snap.pay('{{ $order->snap_token }}', {
-            // JIKA SUKSES: Redirect ke route success (Status DB berubah jadi Paid)
             onSuccess: function(result){
-                window.location.href = '{{ route("checkout.success", $order->id) }}' 
+                window.location.href = '{{ route("checkout.success", $order->id) }}'; 
             },
-            // JIKA PENDING/CLOSE: Reload halaman ini + kasih parameter status=pending
+            
             onPending: function(result){
                 window.location.href = '{{ route("checkout.payment", $order->id) }}?status=pending';
             },
-            onClose: function(){
-                window.location.href = '{{ route("checkout.payment", $order->id) }}?status=pending';
-            },
-            // JIKA ERROR
+
             onError: function(result){
                 alert("Pembayaran gagal!");
+            },
+            onClose: function(){
+                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
             }
         });
     };
