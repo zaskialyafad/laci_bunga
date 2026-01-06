@@ -234,7 +234,7 @@ function generateKeTabel() {
     cekKondisiTabel();
 }
 
-// Fungsi: Tambah HTML ke Tabel
+// Fungsi: Tambah baris ke Tabel
 function tambahBaris(warna, ukuran, prodCode) {
     const valWarna = warna === '-' ? '' : warna;
     const valUkuran = ukuran === '-' ? '' : ukuran;
