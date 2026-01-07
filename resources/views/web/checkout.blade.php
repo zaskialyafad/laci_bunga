@@ -16,18 +16,6 @@
         </div>
     </div>
 
-    {{-- Tampilkan Error Validasi --}}
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Ups! Ada masalah:</strong>
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <div class="row g-4">
         {{-- Kolom Kiri: Form Pengiriman --}}
@@ -97,7 +85,6 @@
                         @foreach ($cart as $c)
                             <li class="list-group-item d-flex justify-content-between align-items-center py-3">
                                 <div class="d-flex align-items-center">
-                                    {{-- Gambar Kecil (Jika ada) --}}
                                     <div class="me-3" style="width: 50px; height: 50px; background: #f0f0f0; border-radius: 8px; overflow: hidden;">
                                         @if($c->product->gambar_produk->count() > 0)
                                             <img src="{{ asset('storage/productsImg/' . $c->product->gambar_produk->first()->image) }}" 

@@ -19,11 +19,6 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        // Semua kategori
-        $category = Category::with(['products' => function($query) {
-            $query->where('status', 'show')->with('gambar_produk');
-        }])->get();
-
         // New Arrivals (8 produk terbaru)
         $newArrivals = Product::with(['gambar_produk', 'product_variation'])
             ->where('status', 'show')
@@ -31,7 +26,7 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        // Best Sellers (random 8 produk untuk simulasi best seller)
+        // Best Sellers (simulasi)
         $bestSellers = Product::with(['gambar_produk', 'product_variation'])
             ->where('status', 'show')
             ->inRandomOrder()
@@ -47,7 +42,6 @@ class HomeController extends Controller
 
         return view('web.home-page', compact(
             'produkBanner',
-            'category',
             'newArrivals',
             'bestSellers',
             'relatedProducts'

@@ -39,16 +39,14 @@ class WishlistController extends Controller
 
         if ($wishlist) {
             $wishlist->delete(); // Jika sudah ada, dihapus
-            $message = 'Produk dihapus dari wishlist.';
         } else {
             Wishlist::create([ // Jika belum ada, ditambah
                 'user_id' => Auth::id(),
                 'product_id' => $request->product_id
             ]);
-            $message = 'Produk ditambahkan ke wishlist.';
         }
 
-        return redirect()->back()->with('success', $message);
+        return redirect()->back()->with('success');
     }
 
      

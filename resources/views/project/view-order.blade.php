@@ -62,7 +62,7 @@
                         <td>{{ $order->receiver_name }}</td>
                         <td>Rp {{ number_format($order->total_price) }}</td>
                         
-                        {{-- KOLOM ALAMAT (PENGGANTI STATUS) --}}
+                        {{-- KOLOM ALAMAT --}}
                         <td>
                             {{ $order->address }}
                         </td>

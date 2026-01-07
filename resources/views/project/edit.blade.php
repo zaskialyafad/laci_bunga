@@ -226,7 +226,7 @@ function kembaliKeSingle() {
         el.setAttribute('required', 'required');
     });
 
-    // Matikan input variasi (jaga-jaga)
+    // Matikan input variasi 
     document.querySelectorAll('.var-input').forEach(el => el.disabled = true);
 }
 

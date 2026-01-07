@@ -1,13 +1,5 @@
 @extends('layout.template-page')
 @section('content')
-<div class="container mt-3">
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-</div>
 
     {{-- Header --}}
     <section id="header" class="py-5 bg-light">
@@ -93,9 +85,9 @@
 
                                         <button type="submit" class="btn btn-light btn-sm shadow-sm rounded-circle" style="width: 40px; height: 40px;">
                                             @if($inWishlist)
-                                                <i class="fas fa-heart text-danger"></i> {{-- Hati Merah (Solid) --}}
+                                                <i class="fas fa-heart text-danger"></i> 
                                             @else
-                                                <i class="far fa-heart"></i> {{-- Hati Kosong (Regular) --}}
+                                                <i class="far fa-heart"></i>
                                             @endif
                                         </button>
                                     </form>

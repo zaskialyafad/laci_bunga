@@ -25,7 +25,7 @@ class CheckoutController extends Controller
         return redirect()->route('web.all-produk');
     }
 
-    return view('web.checkout', compact('cart', 'subTotal'));
+        return view('web.checkout', compact('cart', 'subTotal'));
     }
     
     // PROSES CHECKOUT (Simpan Data & Request Midtrans)
@@ -40,7 +40,6 @@ class CheckoutController extends Controller
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'total_price' => $request->total_price,
-                'status' => 'pending',
             ]);
 
         $carts = Cart::with(['product', 'product_variation'])->where('user_id', auth()->id())->get();
@@ -64,6 +63,7 @@ class CheckoutController extends Controller
             Config::$isSanitized = true;
             Config::$is3ds = true;
 
+            // array data untuk dikirim ke midtrans
             $params = [
                 'transaction_details'=>[
                     'order_id' => $order->order_number,

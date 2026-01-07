@@ -34,7 +34,6 @@ class ProductController extends Controller
 
     public function tambah()
     {
-
         $category = Category::all();
         return view('project.tambah', compact('category'));
     }
@@ -107,11 +106,12 @@ class ProductController extends Controller
 
             DB::commit();
             return redirect()->route('admin.view-data')->with('success','Product berhasil ditambahkan!');
-        } catch (\Exception $e) {
-
+        } 
+        catch (\Exception $e){
          // rollback jika terjadi error
         DB::rollBack();
-        return redirect()->back()->withInput()->with('error', 'Gagal simpan: ' . $e->getMessage());        }      
+        return redirect()->back()->withInput()->with('error', 'Gagal simpan: ' . $e->getMessage());        
+    }      
     }
     
     
@@ -292,7 +292,7 @@ class ProductController extends Controller
                 ->get();
                        
     return view('project.view-order', compact('orders'));
-}
+    }
 
     public function deleteOrder($id)
 {

@@ -6,7 +6,6 @@
         <div class="col-md-6">
             <div class="card border-0 shadow-sm rounded-4 text-center p-5">
                 
-                {{-- Ikon Sukses Animasi --}}
                 <div class="mb-4">
                     <i class="fas fa-check-circle text-success" style="font-size: 80px;"></i>
                 </div>

@@ -42,8 +42,8 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status Produk<span class="text-danger">*</span></label>
                         <select name="status" id="status" class="form-select" required>
-                            <option value="show" {{ old('status', $product->status) == 'show' ? 'selected' : '' }}>Tampilkan</option>
-                            <option value="archive" {{ old('status', $product->status) == 'archive' ? 'selected' : '' }}>Arsipkan</option>
+                            <option value="show" selected>Tampilkan</option>
+                            <option value="archive">Arsipkan</option>
                         </select>
                     </div>
                 </div>
@@ -234,7 +234,7 @@ function generateKeTabel() {
     cekKondisiTabel();
 }
 
-// Fungsi: Tambah baris ke Tabel
+// Fungsi: Tambah HTML ke Tabel
 function tambahBaris(warna, ukuran, prodCode) {
     const valWarna = warna === '-' ? '' : warna;
     const valUkuran = ukuran === '-' ? '' : ukuran;

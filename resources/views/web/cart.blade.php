@@ -17,13 +17,6 @@
 {{-- Cart Content --}}
 <section class="py-5">
     <div class="container">
-        {{-- Tampilan Alert Pesan Sukses/Error --}}
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
 
         @if($carts->count() > 0)
             <div class="row">
@@ -71,7 +64,7 @@
                                             </strong>
                                         </div>
 
-                                        {{-- Quantity (Tradisional Form) --}}
+                                        {{-- Quantity --}}
                                         <div class="col-md-2 col-6 mt-2 mt-md-0">
                                             <form action="{{ route('cart.update', $cart->id) }}" method="POST">
                                                 @csrf
