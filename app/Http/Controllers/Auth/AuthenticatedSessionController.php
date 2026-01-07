@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
         if ($request->user()->role === 'admin'){
             return redirect()->intended('/admin/view-data');
         }
-        return redirect()->intended('/');
+        return redirect()->intended(route('web.home-page'));
     }
 
     /**

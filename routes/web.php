@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Admin Product Management
-    Route::prefix('admin')->name('admin.')->group(function() {
+    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function() {
         Route::get('/view-data', [ProductController::class, 'index'])->name('view-data');
         Route::get('/tambah', [ProductController::class, 'tambah'])->name('tambah');
         Route::post('/simpan', [ProductController::class, 'simpanProduk'])->name('simpanProduk');
